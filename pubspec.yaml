@@ -1,0 +1,23 @@
+name: online_cv
+description: An online version of my CV, built with Flutter.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.2.0
+  google_fonts: ^6.3.0
+  phosphor_flutter: ^2.1.0
+  super_sliver_list: ^0.4.1
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
