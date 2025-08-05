@@ -1,6 +1,6 @@
 # online_cv
 
-An online version of my CV, built with Flutter. Visit the live site at https://zachmattopo.github.io/online_cv/.
+An online version of my CV, built with Flutter. Visit the live site at https://zachmattopo.github.io/online-cv-live/.
 
 ## Objective of this repository:
 
