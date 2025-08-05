@@ -1,16 +1,9 @@
-# my_flutter_app
+# online_cv
 
-A new Flutter project.
+An online version of my CV, built with Flutter. Visit the live site at https://zachmattopo.github.io/online_cv/.
 
-## Getting Started
+## Objective of this repository:
 
-This project is a starting point for a Flutter application.
+1. To showcase my professional experience and portfolio.
+2. And at the same time, to showcase my code work (code structuring and architecture). Feel free to browse around in the repo!
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
