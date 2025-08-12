@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactSection extends StatelessWidget {
@@ -56,8 +57,7 @@ class ContactSection extends StatelessWidget {
                         'I\'m always interested in new opportunities and collaborations. Feel free to reach out!',
                         style: theme.textTheme.bodyLarge?.copyWith(
                           height: 1.6,
-                          color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.8),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -76,16 +76,9 @@ class ContactSection extends StatelessWidget {
                           ),
                           _buildContactButton(
                             context,
-                            'Phone',
-                            '+447877978953',
-                            Icons.phone,
-                            'tel:+447877978953',
-                          ),
-                          _buildContactButton(
-                            context,
                             'LinkedIn',
                             'Connect with me',
-                            Icons.person,
+                            PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
                             'https://www.linkedin.com/in/hafiznordin/',
                           ),
                         ],
@@ -94,8 +87,7 @@ class ContactSection extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer
-                              .withValues(alpha: 0.5),
+                          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
@@ -103,11 +95,11 @@ class ContactSection extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                _buildInfoChip(
-                                    context, 'Availability', 'Immediate'),
+                                _buildInfoChip(context, 'Availability', 'Immediate'),
+                                SizedBox(width: 16),
                                 _buildInfoChip(context, 'Location', 'UK'),
-                                _buildInfoChip(
-                                    context, 'Visa', 'No sponsorship needed'),
+                                SizedBox(width: 16),
+                                _buildInfoChip(context, 'Visa', 'No sponsorship needed'),
                               ],
                             ),
                           ],
