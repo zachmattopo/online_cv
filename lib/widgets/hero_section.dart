@@ -84,7 +84,7 @@ class HeroSection extends StatelessWidget {
             _buildSocialButton(
               'LinkedIn',
               'https://www.linkedin.com/in/hafiznordin/',
-              PhosphorIcons.linkedinLogo(),
+              PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
               context,
             ),
             _buildSocialButton(
