@@ -9,6 +9,7 @@ class ContactSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
+    final isDesktop = screenWidth > 600;
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -85,23 +86,20 @@ class ContactSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
                       Container(
+                        width: double.infinity,
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Column(
+                        child: Wrap(
+                          alignment: isDesktop ? WrapAlignment.spaceEvenly : WrapAlignment.center,
+                          spacing: 24,
+                          runSpacing: 16,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildInfoChip(context, 'Availability', 'Immediate'),
-                                SizedBox(width: 16),
-                                _buildInfoChip(context, 'Location', 'UK'),
-                                SizedBox(width: 16),
-                                _buildInfoChip(context, 'Visa sponsorship', 'Not needed'),
-                              ],
-                            ),
+                            _buildInfoChip(context, 'Availability', 'Immediate'),
+                            _buildInfoChip(context, 'Location', 'UK'),
+                            _buildInfoChip(context, 'Visa sponsorship', 'Not needed'),
                           ],
                         ),
                       ),
