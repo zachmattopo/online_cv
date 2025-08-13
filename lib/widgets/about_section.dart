@@ -6,7 +6,7 @@ class AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -63,7 +63,7 @@ class AboutSection extends StatelessWidget {
 
   Widget _buildInfoGrid(BuildContext context) {
     final theme = Theme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.sizeOf(context).width;
     final isDesktop = screenWidth > 600;
 
     final infoItems = [

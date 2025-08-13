@@ -12,7 +12,7 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.sizeOf(context).width;
     final isDesktop = screenWidth > 600;
 
     return SliverAppBar(
@@ -59,7 +59,7 @@ class AppBarWidget extends StatelessWidget {
                 child: Text('Contact'),
               ),
             ],
-            onSelected: onNavigate,
+            onSelected: (index) => onNavigate(index),
           ),
         const SizedBox(width: 16),
         IconButton(
@@ -72,6 +72,7 @@ class AppBarWidget extends StatelessWidget {
                 theme.brightness == Brightness.dark ? ThemeMode.light : ThemeMode.dark;
           },
         ),
+        const SizedBox(width: 16),
       ],
     );
   }
