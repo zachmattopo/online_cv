@@ -4,16 +4,16 @@ import '../main.dart';
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({
     required this.onNavigate,
-    required this.isDesktop,
     super.key,
   });
 
   final Function(int) onNavigate;
-  final bool isDesktop;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isDesktop = screenWidth > 600;
 
     return SliverAppBar(
       backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.95),
