@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class AppBarWidget extends StatelessWidget {
-  final Function(int) onNavigate;
-
   const AppBarWidget({
-    super.key,
     required this.onNavigate,
+    required this.isDesktop,
+    super.key,
   });
+
+  final Function(int) onNavigate;
+  final bool isDesktop;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final isDesktop = screenWidth > 600;
 
     return SliverAppBar(
       backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.95),
@@ -38,28 +38,12 @@ class AppBarWidget extends StatelessWidget {
           PopupMenuButton(
             icon: const Icon(Icons.menu),
             itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 1,
-                child: Text('About'),
-              ),
-              PopupMenuItem(
-                value: 2,
-                child: Text('Experience'),
-              ),
-              PopupMenuItem(
-                value: 3,
-                child: Text('Skills'),
-              ),
-              PopupMenuItem(
-                value: 4,
-                child: Text('Education'),
-              ),
-              PopupMenuItem(
-                value: 5,
-                child: Text('Contact'),
-              ),
+              _buildPopupMenuItem('About', 1),
+              _buildPopupMenuItem('Experience', 2),
+              _buildPopupMenuItem('Skills', 3),
+              _buildPopupMenuItem('Education', 4),
+              _buildPopupMenuItem('Contact', 5),
             ],
-            onSelected: (index) => onNavigate(index),
           ),
         const SizedBox(width: 16),
         IconButton(
@@ -86,6 +70,13 @@ class AppBarWidget extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
       ),
+    );
+  }
+
+  PopupMenuItem _buildPopupMenuItem(String label, int index) {
+    return PopupMenuItem(
+      child: Text(label),
+      onTap: () => onNavigate(index),
     );
   }
 }

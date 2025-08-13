@@ -72,14 +72,18 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isDesktop = screenWidth > 600;
+
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          AppBarWidget(onNavigate: _scrollToSection),
+          AppBarWidget(onNavigate: _scrollToSection, isDesktop: isDesktop),
           SuperSliverList(
             listController: _listController,
             delegate: SliverChildListDelegate([
+              // TODO(hafiz): Make the sections accept `isDesktop` var to adjust layout
               HeroSection(key: _sectionKeys[0]),
               AboutSection(key: _sectionKeys[1]),
               ExperienceSection(key: _sectionKeys[2]),
