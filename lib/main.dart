@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/portfolio_screen.dart';
@@ -8,6 +9,11 @@ final ValueNotifier<ThemeMode> themeNotifier =
 
 void main() {
   runApp(const PortfolioApp());
+
+  if(kIsWeb) {
+    // Required on web/desktop to automatically enable accessibility features.
+    WidgetsFlutterBinding.ensureInitialized().ensureSemantics();
+  }
 }
 
 class PortfolioApp extends StatelessWidget {
