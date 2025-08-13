@@ -105,7 +105,7 @@ class SkillsSection extends StatelessWidget {
                     tech,
                     style: theme.textTheme.bodySmall,
                   ),
-                  backgroundColor: theme.colorScheme.surfaceContainer,
+                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
                   side: BorderSide.none,
                 )).toList(),
               ),

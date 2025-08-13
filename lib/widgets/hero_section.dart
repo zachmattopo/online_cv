@@ -57,7 +57,6 @@ class HeroSection extends StatelessWidget {
           'Hi, I\'m Hafiz Nordin',
           style: theme.textTheme.headlineLarge?.copyWith(
             fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 16),
@@ -70,11 +69,13 @@ class HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Text(
-          'A self-taught developer with a degree in Mechanical Engineering. Born and raised in 🇲🇾, now based in 🇬🇧.',
+          'A self-taught developer with a degree in Mechanical Engineering from 🇺🇸. Born and raised in 🇲🇾, now based in 🇬🇧.',
           style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+            color: theme.colorScheme.onSurfaceVariant,
             height: 1.6,
           ),
+          semanticsLabel:
+              'A self-taught developer with a degree in Mechanical Engineering from the United States of America. Born and raised in Malaysia, now based in the United Kingdom.',
         ),
         const SizedBox(height: 32),
         Wrap(

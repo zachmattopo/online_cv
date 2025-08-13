@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 class AppBarWidget extends StatelessWidget {
   final Function(int) onNavigate;
@@ -11,7 +12,7 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return SliverAppBar(
       backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.95),
       elevation: 0,
@@ -31,6 +32,16 @@ class AppBarWidget extends StatelessWidget {
         _buildNavButton(context, 'Education', 4),
         _buildNavButton(context, 'Contact', 5),
         const SizedBox(width: 16),
+        IconButton(
+          tooltip: 'Toggle dark/light mode',
+          icon: Icon(
+            theme.brightness == Brightness.dark ? Icons.light_mode : Icons.dark_mode,
+          ),
+          onPressed: () {
+            themeNotifier.value =
+                theme.brightness == Brightness.dark ? ThemeMode.light : ThemeMode.dark;
+          },
+        ),
       ],
     );
   }
@@ -41,8 +52,8 @@ class AppBarWidget extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
+              fontWeight: FontWeight.w500,
+            ),
       ),
     );
   }

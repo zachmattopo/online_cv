@@ -15,7 +15,7 @@ class ExperienceSection extends StatelessWidget {
         horizontal: screenWidth * 0.05,
         vertical: 80,
       ),
-      color: theme.colorScheme.surfaceContainer.withValues(alpha: 0.3),
+      color: theme.colorScheme.surfaceContainerLowest,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -98,30 +98,30 @@ class ExperienceSection extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ...experience.highlights.map((highlight) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 8, right: 12),
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      highlight,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        height: 1.5,
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 8, right: 12),
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: Text(
+                          highlight,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )),
+                )),
             if (experience.url.isNotEmpty) ...[
               const SizedBox(height: 16),
               ElevatedButton.icon(

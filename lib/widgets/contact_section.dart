@@ -99,7 +99,7 @@ class ContactSection extends StatelessWidget {
                                 SizedBox(width: 16),
                                 _buildInfoChip(context, 'Location', 'UK'),
                                 SizedBox(width: 16),
-                                _buildInfoChip(context, 'Visa', 'No sponsorship needed'),
+                                _buildInfoChip(context, 'Visa sponsorship', 'Not needed'),
                               ],
                             ),
                           ],
@@ -131,6 +131,10 @@ class ContactSection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: theme.colorScheme.primaryContainer,
+            width: 1,
+          ),
         ),
       ),
       child: Column(

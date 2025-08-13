@@ -13,7 +13,7 @@ class EducationSection extends StatelessWidget {
         horizontal: screenWidth * 0.05,
         vertical: 80,
       ),
-      color: theme.colorScheme.surfaceContainer.withValues(alpha: 0.3),
+      color: theme.colorScheme.surfaceContainerLowest,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -84,7 +84,7 @@ class EducationSection extends StatelessWidget {
             Text(
               'August 2011 - May 2015',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 12),
@@ -166,7 +166,7 @@ class EducationSection extends StatelessWidget {
                       ),
                       Text(' • ${cert['date']!}',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -187,3 +187,4 @@ class EducationSection extends StatelessWidget {
     );
   }
 }
+
