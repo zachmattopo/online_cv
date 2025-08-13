@@ -12,6 +12,8 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 600;
 
     return SliverAppBar(
       backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.95),
@@ -26,11 +28,39 @@ class AppBarWidget extends StatelessWidget {
         ),
       ),
       actions: [
-        _buildNavButton(context, 'About', 1),
-        _buildNavButton(context, 'Experience', 2),
-        _buildNavButton(context, 'Skills', 3),
-        _buildNavButton(context, 'Education', 4),
-        _buildNavButton(context, 'Contact', 5),
+        if (isDesktop) ...[
+          _buildNavButton(context, 'About', 1),
+          _buildNavButton(context, 'Experience', 2),
+          _buildNavButton(context, 'Skills', 3),
+          _buildNavButton(context, 'Education', 4),
+          _buildNavButton(context, 'Contact', 5)
+        ] else
+          PopupMenuButton(
+            icon: const Icon(Icons.menu),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 1,
+                child: Text('About'),
+              ),
+              PopupMenuItem(
+                value: 2,
+                child: Text('Experience'),
+              ),
+              PopupMenuItem(
+                value: 3,
+                child: Text('Skills'),
+              ),
+              PopupMenuItem(
+                value: 4,
+                child: Text('Education'),
+              ),
+              PopupMenuItem(
+                value: 5,
+                child: Text('Contact'),
+              ),
+            ],
+            onSelected: onNavigate,
+          ),
         const SizedBox(width: 16),
         IconButton(
           tooltip: 'Toggle dark/light mode',
