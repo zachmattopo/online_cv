@@ -50,8 +50,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
       index: index,
       scrollController: _scrollController,
       alignment: 0.0,
-      duration: (estimatedDistance) => Duration(milliseconds: 500),
-      curve: (estimatedDistance) => Curves.easeOutCubic,
+      duration: (_) => Duration(milliseconds: 500),
+      curve: (_) => Curves.easeOutCubic,
     );
   }
 
