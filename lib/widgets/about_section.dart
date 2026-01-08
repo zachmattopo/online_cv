@@ -49,7 +49,7 @@ class AboutSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 32),
-                      _buildInfoGrid(context),
+                      InfoGrid(),
                     ],
                   ),
                 ),
@@ -60,8 +60,13 @@ class AboutSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildInfoGrid(BuildContext context) {
+class InfoGrid extends StatelessWidget {
+  const InfoGrid({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isDesktop = screenWidth > 600;

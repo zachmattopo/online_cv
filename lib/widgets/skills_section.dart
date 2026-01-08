@@ -42,7 +42,7 @@ class SkillsSection extends StatelessWidget {
                     children: skills.map((skill) {
                       return SizedBox(
                         width: itemWidth,
-                        child: _buildSkillCard(context, skill),
+                        child: SkillCard(skill: skill),
                       );
                     }).toList(),
                   );
@@ -54,8 +54,18 @@ class SkillsSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSkillCard(BuildContext context, Skill skill) {
+class SkillCard extends StatelessWidget {
+  const SkillCard({
+    super.key,
+    required this.skill,
+  });
+
+  final Skill skill;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Card(
