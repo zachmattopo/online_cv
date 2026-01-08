@@ -1,11 +1,20 @@
+class UrlLink {
+  final String url;
+  final String label;
+
+  const UrlLink({
+    required this.url,
+    required this.label,
+  });
+}
+
 class Experience {
   final String company;
   final String position;
   final String location;
   final String date;
   final List<String> highlights;
-  final String url;
-  final String urlLabel;
+  final List<UrlLink> urls;
 
   const Experience({
     required this.company,
@@ -13,8 +22,7 @@ class Experience {
     required this.location,
     required this.date,
     required this.highlights,
-    this.url = '',
-    this.urlLabel = '',
+    this.urls = const [],
   });
 }
 
@@ -30,8 +38,16 @@ final List<Experience> experiences = [
       'Accelerated junior developer onboarding and reduced code-related incidents by 25% through structured mentoring of best practices, technical walkthroughs, and documentation support.',
       'Practiced Agile methodology (Scrum) to manage projects efficiently, contributing to a consistent sprint velocity.',
     ],
-    url: 'https://apps.apple.com/gb/app/ee-game-home-work-learn/id567457151',
-    urlLabel: 'EE app on App Store',
+    urls: const [
+      UrlLink(
+        url: 'https://apps.apple.com/gb/app/ee-game-home-work-learn/id567457151',
+        label: 'EE app on App Store',
+      ),
+      UrlLink(
+        url: 'https://play.google.com/store/apps/details?id=uk.co.ee.myee',
+        label: 'EE app on Play Store',
+      ),
+    ],
   ),
   Experience(
     company: 'GoGet.my',
@@ -44,8 +60,16 @@ final List<Experience> experiences = [
       'Increased app ratings from 3.7 to 4.6 stars on Google Play Store and from 2.4 to 4.3 stars on Apple App Store by leading the implementation of In-app Review feature.',
       'Optimised app performance by troubleshooting and resolving issues, ensuring a crash-free rate above 95% across multiple iterations.',
     ],
-    url: 'https://play.google.com/store/apps/details?id=my.goget.gogetter&hl=en&gl=US',
-    urlLabel: 'GoGetter app on Play Store',
+    urls: const [
+      UrlLink(
+        url: 'https://apps.apple.com/my/app/goget-find-jobs/id1483160371',
+        label: 'GoGetter app on App Store',
+      ),
+      UrlLink(
+        url: 'https://play.google.com/store/apps/details?id=my.goget.gogetter',
+        label: 'GoGetter app on Play Store',
+      ),
+    ],
   ),
   Experience(
     company: 'Arise Consulting Sdn. Bhd.',
@@ -65,7 +89,11 @@ final List<Experience> experiences = [
     highlights: [
       'Developed and maintained an iOS chat app DotDotPlus, that integrates with 3rd party services and sensors for user notifications. Worked closely with UI/UX designers for a truly optimised app experience.',
     ],
-    url: 'https://apps.apple.com/id/app/dotdotplus/id1276921712',
-    urlLabel: 'DotDotPlus app on App Store',
+    urls: const [
+      UrlLink(
+        url: 'https://apps.apple.com/id/app/dotdotplus/id1276921712',
+        label: 'DotDotPlus app on App Store',
+      ),
+    ],
   ),
 ];

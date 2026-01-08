@@ -30,15 +30,25 @@ class ExperienceSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              ...experiences.map((exp) => _buildExperienceCard(context, exp)),
+              ...experiences.map((exp) => ExperienceCard(experience: exp)),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildExperienceCard(BuildContext context, Experience experience) {
+class ExperienceCard extends StatelessWidget {
+  const ExperienceCard({
+    super.key,
+    required this.experience,
+  });
+
+  final Experience experience;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Card(
@@ -122,15 +132,21 @@ class ExperienceSection extends StatelessWidget {
                     ],
                   ),
                 )),
-            if (experience.url.isNotEmpty) ...[
+            if (experience.urls.isNotEmpty) ...[
               const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () => _launchUrl(experience.url),
-                icon: const Icon(Icons.open_in_new, size: 16),
-                label: Text(experience.urlLabel),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: experience.urls.map((urlLink) {
+                  return ElevatedButton.icon(
+                    onPressed: () => _launchUrl(urlLink.url),
+                    icon: const Icon(Icons.open_in_new, size: 16),
+                    label: Text(urlLink.label),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ],
