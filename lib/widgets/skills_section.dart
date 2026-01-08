@@ -28,18 +28,25 @@ class SkillsSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: screenWidth > 900 ? 2 : 1,
-                  // TODO(hafiz): Make child height dynamic when screen width <= 900
-                  childAspectRatio: screenWidth > 900 ? 1.5 : 1.2,
-                  crossAxisSpacing: 24,
-                  mainAxisSpacing: 24,
-                ),
-                itemCount: skills.length,
-                itemBuilder: (context, index) => _buildSkillCard(context, skills[index]),
+              // Use LayoutBuilder + Wrap so each card gets a fixed width (2 cols on wide screens, 1 on narrow)
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final spacing = 24.0;
+                  final columnCount = screenWidth > 900 ? 2 : 1;
+                  final itemWidth =
+                      (constraints.maxWidth - spacing * (columnCount - 1)) / columnCount;
+
+                  return Wrap(
+                    spacing: spacing,
+                    runSpacing: spacing,
+                    children: skills.map((skill) {
+                      return SizedBox(
+                        width: itemWidth,
+                        child: _buildSkillCard(context, skill),
+                      );
+                    }).toList(),
+                  );
+                },
               ),
             ],
           ),
@@ -57,6 +64,7 @@ class SkillsSection extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min, // let card height wrap its content
           children: [
             Row(
               children: [
@@ -96,19 +104,22 @@ class SkillsSection extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: skill.technologies.map((tech) => Chip(
-                  label: Text(
-                    tech,
-                    style: theme.textTheme.bodySmall,
-                  ),
-                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                  side: BorderSide.none,
-                )).toList(),
-              ),
+            // Height of Wrap is based on content
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: skill.technologies
+                  .map(
+                    (tech) => Chip(
+                      label: Text(
+                        tech,
+                        style: theme.textTheme.bodySmall,
+                      ),
+                      backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                      side: BorderSide.none,
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ),

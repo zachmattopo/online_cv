@@ -73,49 +73,48 @@ class AboutSection extends StatelessWidget {
       {'label': 'Visa Type', 'value': 'Dependent visa'},
     ];
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: isDesktop ? 2 : 1,
-        // TODO(hafiz): Make child height shorter when isDesktop is true
-        childAspectRatio: isDesktop ? 3 : 4,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-      ),
-      itemCount: infoItems.length,
-      itemBuilder: (context, index) {
-        final item = infoItems[index];
-        return Container(
-          // Reduced padding to prevent overflow
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainer.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min, // Added this to minimize height
-            children: [
-              Text(
-                item['label']!,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
+    // Use LayoutBuilder + Wrap so each child width is controlled (2 cols on desktop, 1 on mobile)
+    return LayoutBuilder(builder: (context, constraints) {
+      final spacing = 16.0;
+      final columnCount = isDesktop ? 2 : 1;
+      final itemWidth = (constraints.maxWidth - spacing * (columnCount - 1)) / columnCount;
+
+      return Wrap(
+        spacing: spacing,
+        runSpacing: spacing,
+        children: infoItems.map((item) {
+          return SizedBox(
+            width: itemWidth,
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainer.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(8),
               ),
-              const SizedBox(height: 4),
-              Text(
-                item['value']!,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min, // height is based on content
+                children: [
+                  Text(
+                    item['label']!,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    item['value']!,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
-    );
+            ),
+          );
+        }).toList(),
+      );
+    });
   }
 }
