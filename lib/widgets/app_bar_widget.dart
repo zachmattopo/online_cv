@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class AppBarWidget extends StatelessWidget {
+  final Function(int) onNavigate;
+  
   const AppBarWidget({
     required this.onNavigate,
     super.key,
   });
-
-  final Function(int) onNavigate;
 
   @override
   Widget build(BuildContext context) {

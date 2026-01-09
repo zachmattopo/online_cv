@@ -32,24 +32,31 @@ class HeroSection extends StatelessWidget {
           child: isDesktop
               ? Row(
                   children: [
-                    Expanded(child: _buildContent(context, theme)),
+                    Expanded(child: const HeroContent()),
                     const SizedBox(width: 60),
-                    _buildProfileImage(context, 300),
+                    const ProfileImage(size: 300),
                   ],
                 )
               : Column(
                   children: [
-                    _buildProfileImage(context, 200),
+                    const ProfileImage(size: 200),
                     const SizedBox(height: 40),
-                    _buildContent(context, theme),
+                    const HeroContent(),
                   ],
                 ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildContent(BuildContext context, ThemeData theme) {
+class HeroContent extends StatelessWidget {
+  const HeroContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -82,31 +89,38 @@ class HeroSection extends StatelessWidget {
           spacing: 16,
           runSpacing: 16,
           children: [
-            _buildSocialButton(
-              'LinkedIn',
-              'https://www.linkedin.com/in/hafiznordin/',
-              PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
-              context,
+            SocialButton(
+              label: 'LinkedIn',
+              url: 'https://www.linkedin.com/in/hafiznordin/',
+              icon: PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
             ),
-            _buildSocialButton(
-              'GitHub',
-              'https://github.com/zachmattopo',
-              PhosphorIcons.githubLogo(),
-              context,
+            SocialButton(
+              label: 'GitHub',
+              url: 'https://github.com/zachmattopo',
+              icon: PhosphorIcons.githubLogo(),
             ),
-            _buildSocialButton(
-              'Stack Overflow',
-              'https://stackoverflow.com/users/9166207/hafiz',
-              PhosphorIcons.stackOverflowLogo(),
-              context,
+            SocialButton(
+              label: 'Stack Overflow',
+              url: 'https://stackoverflow.com/users/9166207/hafiz',
+              icon: PhosphorIcons.stackOverflowLogo(),
             ),
           ],
         ),
       ],
     );
   }
+}
 
-  Widget _buildProfileImage(BuildContext context, double size) {
+class ProfileImage extends StatelessWidget {
+  final double size;
+
+  const ProfileImage({
+    super.key,
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: size,
       height: size,
@@ -139,8 +153,29 @@ class HeroSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSocialButton(String label, String url, IconData icon, BuildContext context) {
+class SocialButton extends StatelessWidget {
+  final String label;
+  final String url;
+  final IconData icon;
+
+  const SocialButton({
+    super.key,
+    required this.label,
+    required this.url,
+    required this.icon,
+  });
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () => _launchUrl(url),
       icon: Icon(icon),
@@ -149,13 +184,5 @@ class HeroSection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       ),
     );
-  }
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
   }
 }

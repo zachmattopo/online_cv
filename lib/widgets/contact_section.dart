@@ -68,19 +68,17 @@ class ContactSection extends StatelessWidget {
                         runSpacing: 16,
                         alignment: WrapAlignment.center,
                         children: [
-                          _buildContactButton(
-                            context,
-                            'Email',
-                            'hafiz.nordin@icloud.com',
-                            Icons.email,
-                            'mailto:hafiz.nordin@icloud.com',
+                          ContactButton(
+                            label: 'Email',
+                            subtitle: 'hafiz.nordin@icloud.com',
+                            icon: Icons.email,
+                            url: 'mailto:hafiz.nordin@icloud.com',
                           ),
-                          _buildContactButton(
-                            context,
-                            'LinkedIn',
-                            'Connect with me',
-                            PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
-                            'https://www.linkedin.com/in/hafiznordin/',
+                          ContactButton(
+                            label: 'LinkedIn',
+                            subtitle: 'Connect with me',
+                            icon: PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
+                            url: 'https://www.linkedin.com/in/hafiznordin/',
                           ),
                         ],
                       ),
@@ -97,9 +95,9 @@ class ContactSection extends StatelessWidget {
                           spacing: 24,
                           runSpacing: 16,
                           children: [
-                            _buildInfoChip(context, 'Availability', 'Immediate'),
-                            _buildInfoChip(context, 'Location', 'UK'),
-                            _buildInfoChip(context, 'Visa sponsorship', 'Not needed'),
+                            InfoChip(label: 'Availability', value: 'Immediate'),
+                            InfoChip(label: 'Location', value: 'UK'),
+                            InfoChip(label: 'Visa sponsorship', value: 'Not needed'),
                           ],
                         ),
                       ),
@@ -113,14 +111,31 @@ class ContactSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildContactButton(
-    BuildContext context,
-    String label,
-    String subtitle,
-    IconData icon,
-    String url,
-  ) {
+class ContactButton extends StatelessWidget {
+  final String label;
+  final String subtitle;
+  final IconData icon;
+  final String url;
+
+  const ContactButton({
+    super.key,
+    required this.label,
+    required this.subtitle,
+    required this.icon,
+    required this.url,
+  });
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return ElevatedButton(
@@ -154,8 +169,20 @@ class ContactSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildInfoChip(BuildContext context, String label, String value) {
+class InfoChip extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const InfoChip({
+    super.key,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Column(
@@ -175,12 +202,5 @@ class ContactSection extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
   }
 }

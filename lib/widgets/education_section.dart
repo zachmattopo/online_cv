@@ -28,17 +28,22 @@ class EducationSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              _buildEducationCard(context),
+              EducationCard(),
               const SizedBox(height: 24),
-              _buildCertificationsCard(context),
+              CertificationsCard(),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildEducationCard(BuildContext context) {
+class EducationCard extends StatelessWidget {
+  const EducationCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Card(
@@ -99,8 +104,13 @@ class EducationSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildCertificationsCard(BuildContext context) {
+class CertificationsCard extends StatelessWidget {
+  const CertificationsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     final certifications = [

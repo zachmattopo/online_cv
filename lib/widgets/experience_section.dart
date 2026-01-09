@@ -40,12 +40,12 @@ class ExperienceSection extends StatelessWidget {
 }
 
 class ExperienceCard extends StatelessWidget {
+  final Experience experience;
+
   const ExperienceCard({
     super.key,
     required this.experience,
   });
-
-  final Experience experience;
 
   @override
   Widget build(BuildContext context) {

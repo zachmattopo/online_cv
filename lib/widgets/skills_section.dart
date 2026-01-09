@@ -57,12 +57,12 @@ class SkillsSection extends StatelessWidget {
 }
 
 class SkillCard extends StatelessWidget {
+  final Skill skill;
+
   const SkillCard({
     super.key,
     required this.skill,
   });
-
-  final Skill skill;
 
   @override
   Widget build(BuildContext context) {
