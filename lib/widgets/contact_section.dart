@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../presentation/cubit/resume_cubit.dart';
 
 class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
@@ -11,104 +12,104 @@ class ContactSection extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isDesktop = screenWidth > 600;
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.05,
-        vertical: 80,
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            theme.colorScheme.surface,
-            theme.colorScheme.primary.withValues(alpha: 0.1),
-          ],
-        ),
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Get In Touch',
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Card(
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Let\'s Connect',
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'I\'m always interested in new opportunities and collaborations. Feel free to reach out!',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          height: 1.6,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 32),
-                      Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
-                        alignment: WrapAlignment.center,
+    return BlocBuilder<ResumeCubit, ResumeState>(
+      builder: (context, state) {
+        return Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.05,
+            vertical: 80,
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                theme.colorScheme.surface,
+                theme.colorScheme.primary.withValues(alpha: 0.1),
+              ],
+            ),
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    state.contactSectionTitle,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
                         children: [
-                          ContactButton(
-                            label: 'Email',
-                            subtitle: 'hafiz.nordin@icloud.com',
-                            icon: Icons.email,
-                            url: 'mailto:hafiz.nordin@icloud.com',
+                          Text(
+                            state.contactCardTitle,
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          ContactButton(
-                            label: 'LinkedIn',
-                            subtitle: 'Connect with me',
-                            icon: PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
-                            url: 'https://www.linkedin.com/in/hafiznordin/',
+                          const SizedBox(height: 16),
+                          Text(
+                            state.contactSummary,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              height: 1.6,
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 32),
+                          Wrap(
+                            spacing: 16,
+                            runSpacing: 16,
+                            alignment: WrapAlignment.center,
+                            children: state.contactButtons.map((btn) {
+                              return ContactButton(
+                                label: btn['label'] as String,
+                                subtitle: btn['subtitle'] as String,
+                                icon: btn['icon'] as IconData,
+                                url: btn['url'] as String,
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 32),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Wrap(
+                              alignment:
+                                  isDesktop ? WrapAlignment.spaceEvenly : WrapAlignment.center,
+                              spacing: 24,
+                              runSpacing: 16,
+                              children: [
+                                ...state.contactInfoItems.map((item) => InfoChip(
+                                      label: item['label'] as String,
+                                      value: item['value'] as String,
+                                    )),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 32),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Wrap(
-                          alignment: isDesktop ? WrapAlignment.spaceEvenly : WrapAlignment.center,
-                          spacing: 24,
-                          runSpacing: 16,
-                          children: [
-                            InfoChip(label: 'Availability', value: 'Immediate'),
-                            InfoChip(label: 'Location', value: 'UK'),
-                            InfoChip(label: 'Visa sponsorship', value: 'Not needed'),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

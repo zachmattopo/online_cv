@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:online_cv/models/social_link.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../presentation/cubit/resume_cubit.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
@@ -30,19 +32,27 @@ class HeroSection extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: isDesktop
-              ? Row(
-                  children: [
-                    Expanded(child: const HeroContent()),
-                    const SizedBox(width: 60),
-                    const ProfileImage(size: 300),
-                  ],
+              ? BlocBuilder<ResumeCubit, ResumeState>(
+                  builder: (context, state) {
+                    return Row(
+                      children: [
+                        Expanded(child: HeroContent()),
+                        const SizedBox(width: 60),
+                        ProfileImage(size: 300, imageUrl: state.profileImageUrl),
+                      ],
+                    );
+                  },
                 )
-              : Column(
-                  children: [
-                    const ProfileImage(size: 200),
-                    const SizedBox(height: 40),
-                    const HeroContent(),
-                  ],
+              : BlocBuilder<ResumeCubit, ResumeState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        ProfileImage(size: 200, imageUrl: state.profileImageUrl),
+                        const SizedBox(height: 40),
+                        HeroContent(),
+                      ],
+                    );
+                  },
                 ),
         ),
       ),
@@ -55,68 +65,65 @@ class HeroContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    return BlocBuilder<ResumeCubit, ResumeState>(
+      builder: (context, state) {
+        final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Hi, I\'m Hafiz Nordin',
-          style: theme.textTheme.headlineLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'Senior Software Engineer',
-          style: theme.textTheme.headlineSmall?.copyWith(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          'A self-taught developer with a degree in Mechanical Engineering from 🇺🇸. Born and raised in 🇲🇾, now based in 🇬🇧.',
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-            height: 1.6,
-          ),
-          semanticsLabel:
-              'A self-taught developer with a degree in Mechanical Engineering from the United States of America. Born and raised in Malaysia, now based in the United Kingdom.',
-        ),
-        const SizedBox(height: 32),
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SocialButton(
-              label: 'LinkedIn',
-              url: 'https://www.linkedin.com/in/hafiznordin/',
-              icon: PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
+            Text(
+              state.heroTitle,
+              style: theme.textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SocialButton(
-              label: 'GitHub',
-              url: 'https://github.com/zachmattopo',
-              icon: PhosphorIcons.githubLogo(),
+            const SizedBox(height: 16),
+            Text(
+              state.heroSubtitle,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            SocialButton(
-              label: 'Stack Overflow',
-              url: 'https://stackoverflow.com/users/9166207/hafiz',
-              icon: PhosphorIcons.stackOverflowLogo(),
+            const SizedBox(height: 24),
+            Text(
+              state.heroDescription,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.6,
+              ),
+              semanticsLabel: state.heroSemanticsLabel,
+            ),
+            const SizedBox(height: 32),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: state.socialLinks
+                  .map(
+                    (SocialLink socialLink) => SocialButton(
+                      label: socialLink.label,
+                      url: socialLink.url,
+                      icon: socialLink.icon,
+                    ),
+                  )
+                  .toList(),
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }
 
 class ProfileImage extends StatelessWidget {
   final double size;
+  final String imageUrl;
 
   const ProfileImage({
     super.key,
     required this.size,
+    required this.imageUrl,
   });
 
   @override
@@ -134,10 +141,10 @@ class ProfileImage extends StatelessWidget {
           ),
         ],
       ),
-      child: ClipRRect(
+        child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.network(
-          'https://avatars.githubusercontent.com/u/39941205?v=4',
+          imageUrl,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Container(

@@ -19,6 +19,10 @@ Architecture & patterns to follow
 - Navigation / scrolling: `PortfolioScreen` uses `ListController` + `ScrollController` to animate between GlobalKey-marked sections — preserve this pattern when adding new sections.
 - Data model conventions: models use immutable `const` classes and top-level `final List<...>` values (edit these rather than scattering data across widgets).
 - In widgets' `build` method, prefer extracting sub-widgets to a separate stateless widget class rather than a helper method (for better performance and readability).
+- If using `bloc` or `cubit` from the bloc package, prefer using `BlocBuilder` instead of direct `read` usages so UI automatically updates if the bloc/cubit changes later.
+- If making a List, prefer to define concrete types (e.g., `List<SocialLink>`) rather than untyped `List` for better type safety.
+- If a stateless widget has no constructor parameters, prefer defining it as a `const` constructor for better performance.
+- Prefer using safe access patterns (e.g., null-aware operators) when reading data from models to avoid runtime exceptions.
 
 Developer workflows (discovered from project files)
 -------------------------------------------------

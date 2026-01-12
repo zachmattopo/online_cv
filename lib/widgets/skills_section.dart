@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/skill.dart';
+import '../presentation/cubit/resume_cubit.dart';
 
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
@@ -17,38 +19,42 @@ class SkillsSection extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Skills & Technologies',
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-              const SizedBox(height: 32),
-              // Use LayoutBuilder + Wrap so each card gets a fixed width (2 cols on wide screens, 1 on narrow)
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final spacing = 24.0;
-                  final columnCount = screenWidth > 900 ? 2 : 1;
-                  final itemWidth =
-                      (constraints.maxWidth - spacing * (columnCount - 1)) / columnCount;
+          child: BlocBuilder<ResumeCubit, ResumeState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    state.sectionSkills,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // Use LayoutBuilder + Wrap so each card gets a fixed width (2 cols on wide screens, 1 on narrow)
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final spacing = 24.0;
+                      final columnCount = screenWidth > 900 ? 2 : 1;
+                      final itemWidth =
+                          (constraints.maxWidth - spacing * (columnCount - 1)) / columnCount;
 
-                  return Wrap(
-                    spacing: spacing,
-                    runSpacing: spacing,
-                    children: skills.map((skill) {
-                      return SizedBox(
-                        width: itemWidth,
-                        child: SkillCard(skill: skill),
+                      return Wrap(
+                        spacing: spacing,
+                        runSpacing: spacing,
+                        children: state.skills.map((skill) {
+                          return SizedBox(
+                            width: itemWidth,
+                            child: SkillCard(skill: skill),
+                          );
+                        }).toList(),
                       );
-                    }).toList(),
-                  );
-                },
-              ),
-            ],
+                    },
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
