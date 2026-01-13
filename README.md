@@ -10,8 +10,8 @@ An online version of my CV, built with Flutter. Visit the live site at https://z
 ---
 
  ***NOTE*** -- Some parts of the code are still WIP e.g.:
-  - The separation of UI and business logic (data/domain/presentation layers).
-  - Minor TODOs for responsive UI on mobile.
+  - ~The separation of UI and business logic (data/domain/presentation layers).~ ✅
+  - ~Minor TODOs for responsive UI on mobile.~ ✅
   - Looping image carousel slideshow in hero section.
   - Additional images to make the webpage stand out.
   - Nice to have: AI chatbot trained on my portfolio and background.
