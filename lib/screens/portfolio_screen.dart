@@ -32,13 +32,10 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   @override
   void initState() {
     _scrollController.addListener(() {
-      if (_scrollController.offset > 0) {
+      final visible = _scrollController.offset > 0;
+      if (visible != _isFabVisible) {
         setState(() {
-          _isFabVisible = true;
-        });
-      } else if (_scrollController.offset == 0) {
-        setState(() {
-          _isFabVisible = false;
+          _isFabVisible = visible;
         });
       }
     });
