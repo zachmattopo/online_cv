@@ -104,12 +104,72 @@ class ContactSection extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  const VisitorCounterCard(),
                 ],
               ),
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class VisitorCounterCard extends StatelessWidget {
+  const VisitorCounterCard({super.key});
+
+  static const String _encodedPortfolioUrl =
+      'https%3A%2F%2Fzachmattopo.github.io%2Fonline-cv-live%2F';
+  static const String _counterImageUrl =
+      'https://api.visitorbadge.io/api/combined?path=$_encodedPortfolioUrl&label=Visitors&countColor=%230284c7&style=flat';
+  static const String _counterStatusUrl =
+      'https://visitorbadge.io/status?path=$_encodedPortfolioUrl';
+
+  Future<void> _launchStatusPage() async {
+    final uri = Uri.parse(_counterStatusUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Page visits',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Image.network(
+            _counterImageUrl,
+            errorBuilder: (context, error, stackTrace) {
+              return Text(
+                'Visitor counter unavailable',
+                style: theme.textTheme.bodySmall,
+              );
+            },
+          ),
+          const SizedBox(height: 8),
+          TextButton.icon(
+            onPressed: _launchStatusPage,
+            icon: const Icon(Icons.show_chart),
+            label: const Text('View visit trend'),
+          ),
+        ],
+      ),
     );
   }
 }
