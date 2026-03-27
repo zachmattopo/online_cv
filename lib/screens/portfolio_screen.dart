@@ -6,6 +6,7 @@ import '../widgets/experience_section.dart';
 import '../widgets/skills_section.dart';
 import '../widgets/education_section.dart';
 import '../widgets/contact_section.dart';
+import '../widgets/visitor_counter_section.dart';
 import '../widgets/app_bar_widget.dart';
 
 class PortfolioScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   bool _isFabVisible = false;
 
   final List<GlobalKey> _sectionKeys = [
+    GlobalKey(),
     GlobalKey(),
     GlobalKey(),
     GlobalKey(),
