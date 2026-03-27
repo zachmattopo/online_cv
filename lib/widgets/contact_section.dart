@@ -126,10 +126,14 @@ class VisitorCounterCard extends StatelessWidget {
   static const String _counterStatusUrl =
       'https://visitorbadge.io/status?path=$_encodedPortfolioUrl';
 
-  Future<void> _launchStatusPage() async {
+  Future<void> _launchStatusPage(BuildContext context) async {
     final uri = Uri.parse(_counterStatusUrl);
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+      await launchUrl(uri, mode: LaunchMode.platformDefault);
+    } else if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Unable to open visit trend right now.')),
+      );
     }
   }
 
@@ -155,6 +159,18 @@ class VisitorCounterCard extends StatelessWidget {
           const SizedBox(height: 12),
           Image.network(
             _counterImageUrl,
+            semanticLabel: 'Visitor count badge',
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+
+              return const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              );
+            },
             errorBuilder: (context, error, stackTrace) {
               return Text(
                 'Visitor counter unavailable',
@@ -164,7 +180,7 @@ class VisitorCounterCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           TextButton.icon(
-            onPressed: _launchStatusPage,
+            onPressed: () => _launchStatusPage(context),
             icon: const Icon(Icons.show_chart),
             label: const Text('View visit trend'),
           ),
