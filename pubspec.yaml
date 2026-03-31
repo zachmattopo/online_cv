@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.2.3
+  jovial_svg: ^1.1.29
   google_fonts: ^7.0.0
   phosphor_flutter: ^2.1.0
   super_sliver_list: ^0.4.1
