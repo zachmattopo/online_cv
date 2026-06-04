@@ -57,11 +57,15 @@ class ResumeRepository {
 
   List getExperiences() => staticExperiences;
 
+  List getProjects() => staticProjects;
+
   List getSkills() => staticSkills;
 
   List<String> getNavLabels() => navLabels;
 
   String getSectionExperience() => sectionExperience;
+
+  String getSectionProjects() => sectionProjects;
 
   String getSectionSkills() => sectionSkills;
 }

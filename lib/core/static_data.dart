@@ -1,6 +1,7 @@
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../models/experience.dart';
+import '../models/project.dart';
 import '../models/skill.dart';
 import '../models/social_link.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ const String profileImageUrl = 'https://avatars.githubusercontent.com/u/39941205
 const List<String> navLabels = [
   'About',
   'Experience',
+  'Projects',
   'Skills',
   'Education',
   'Contact',
@@ -50,6 +52,7 @@ List<SocialLink> socialLinks = [
 
 // Section titles
 const String sectionExperience = 'Experience';
+const String sectionProjects = 'Projects';
 const String sectionSkills = 'Skills & Technologies';
 
 // About section strings
@@ -197,6 +200,24 @@ final List<Skill> staticSkills = [
       'Adobe Experience Manager',
       'Dynatrace',
     ],
+  ),
+];
+
+final List<Project> staticProjects = [
+  Project(
+    name: 'WhereToFuel',
+    description:
+        'A real-time UK fuel price finder for Android, iOS, and Web (Flutter); powered by the government\'s Fuel Finder API and a Firebase backend.',
+    period: 'Jan 2026 - Present',
+    highlights: [
+      'Architecture: Feature-first CLEAN architecture, flutter_bloc (Cubit) state management, get_it DI, go_router routing.',
+      'Backend: Firebase Cloud Functions (Node.js/TypeScript, scheduled-only) polling the GOV.UK Fuel Finder API; Firestore with append-only price history and nightly daily-aggregate compaction.',
+      'Client data: Direct Firestore geohash and lat/long range queries; offline-first Hive cache (NoSQL db) with TTL-aligned stale-while-revalidate. Postcode geocoding via Postcodes.io (free, Hive-cached 30 days).',
+      'Security: Firebase App Check (Play Integrity, App Attest, and reCAPTCHA); API credentials in Google Cloud Secret Manager; Firestore security rules enforcing read-only station data and user-scoped preference writes.',
+      'Other: GDPR analytics consent gating; Firebase Remote Config for force-update enforcement and runtime map tile provider selection.',
+    ],
+    url: 'https://wheretofuel.co.uk',
+    imagePath: 'assets/images/wtf_icon.png',
   ),
 ];
 

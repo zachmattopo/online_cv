@@ -15,8 +15,10 @@ class ResumeState {
   final String aboutSummary;
   final List<Map<String, String>> aboutInfoItems;
   final String sectionExperience;
+  final String sectionProjects;
   final String sectionSkills;
   final List experiences;
+  final List projects;
   final List skills;
   final List navLabels;
   final List<SocialLink> socialLinks;
@@ -60,10 +62,12 @@ class ResumeState {
     required this.contactButtons,
     required this.contactInfoItems,
     required this.experiences,
+    required this.projects,
     required this.skills,
     required this.navLabels,
     required this.socialLinks,
     required this.sectionExperience,
+    required this.sectionProjects,
     required this.sectionSkills,
   });
 }
@@ -101,10 +105,12 @@ class ResumeCubit extends Cubit<ResumeState> {
               contactButtons: repo.getContactButtons(),
               contactInfoItems: repo.getContactInfoItems(),
               experiences: repo.getExperiences(),
+              projects: repo.getProjects(),
               skills: repo.getSkills(),
               navLabels: repo.getNavLabels(),
               socialLinks: repo.getSocialLinks(),
               sectionExperience: repo.getSectionExperience(),
+              sectionProjects: repo.getSectionProjects(),
               sectionSkills: repo.getSectionSkills(),
             );
           })(),

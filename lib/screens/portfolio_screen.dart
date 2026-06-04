@@ -3,6 +3,7 @@ import 'package:super_sliver_list/super_sliver_list.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/about_section.dart';
 import '../widgets/experience_section.dart';
+import '../widgets/projects_section.dart';
 import '../widgets/skills_section.dart';
 import '../widgets/education_section.dart';
 import '../widgets/contact_section.dart';
@@ -22,6 +23,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   bool _isFabVisible = false;
 
   final List<GlobalKey> _sectionKeys = [
+    GlobalKey(),
     GlobalKey(),
     GlobalKey(),
     GlobalKey(),
@@ -81,9 +83,10 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               HeroSection(key: _sectionKeys[0]),
               AboutSection(key: _sectionKeys[1]),
               ExperienceSection(key: _sectionKeys[2]),
-              SkillsSection(key: _sectionKeys[3]),
-              EducationSection(key: _sectionKeys[4]),
-              ContactSection(key: _sectionKeys[5]),
+              ProjectsSection(key: _sectionKeys[3]),
+              SkillsSection(key: _sectionKeys[4]),
+              EducationSection(key: _sectionKeys[5]),
+              ContactSection(key: _sectionKeys[6]),
               const VisitorCounterSection(),
             ]),
           ),

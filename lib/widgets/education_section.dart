@@ -17,7 +17,6 @@ class EducationSection extends StatelessWidget {
             horizontal: screenWidth * 0.05,
             vertical: 80,
           ),
-          color: theme.colorScheme.surfaceContainerLowest,
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
