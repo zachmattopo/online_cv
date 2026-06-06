@@ -1,11 +1,11 @@
 {
-    "name": "Hafiz Nordin - Online CV",
+    "name": "Hafiz Nordin | Online CV",
     "short_name": "Hafiz N.",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "An online version of my CV, built with Flutter.",
+    "description": "Explore my professional background, projects, and contact information. Built with Flutter.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
