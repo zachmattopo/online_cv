@@ -59,7 +59,7 @@ const String sectionSkills = 'Skills & Technologies';
 const String aboutSectionTitle = 'About Me';
 const String aboutSummaryTitle = 'Professional Summary';
 const String aboutSummary =
-    'Versatile mobile developer with 7 years of experience specialising in Flutter/Dart development, with proven track record of delivering high-performance, user-centric apps serving millions of users in telecoms, HR, oil & gas, and healthcare sectors; in both startup and established enterprise environments.';
+    'Versatile mobile developer with 8 years of experience specialising in Flutter/Dart development, with proven track record of delivering high-performance, user-centric apps serving millions of users in telecoms, HR, oil & gas, and healthcare sectors; in both startup and established enterprise environments.';
 
 const List<Map<String, String>> aboutInfoItems = [
   {'label': 'Location', 'value': 'United Kingdom'},
