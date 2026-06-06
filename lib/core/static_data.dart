@@ -7,7 +7,7 @@ import '../models/social_link.dart';
 import 'package:flutter/material.dart';
 
 // App-level static strings and data consolidated here
-const String appTitle = 'Hafiz Nordin - Online CV';
+const String appTitle = 'Hafiz Nordin | Online CV';
 const String appName = 'Hafiz Nordin';
 
 const String heroTitle = 'Hi, I\'m Hafiz Nordin';

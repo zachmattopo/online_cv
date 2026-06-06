@@ -20,9 +20,14 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.7
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+
+flutter_native_splash:
+  color: '#0284C7'
+  image: 'assets/images/splash_image.png'
