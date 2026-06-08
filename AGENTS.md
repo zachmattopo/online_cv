@@ -3,7 +3,7 @@ When editing or debugging this Flutter CV app, mind these non-obvious facts:
 ## Commands
 - `flutter run -d chrome` — run locally
 - `flutter build web --release` — deploy build; output at `build/web/`
-- `flutter analyze` — lint/typecheck (uses `flutter_lints`)
+- `flutter analyze` — lint/typecheck (uses `flutter_lints`), CRITICAL: always run and verify no issues found before ending response
 - `flutter pub get` — install deps
 - FVM: `.fvmrc` pins Flutter 3.41.7 — don't upgrade without updating
 
