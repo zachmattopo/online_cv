@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../presentation/cubit/resume_cubit.dart';
@@ -114,7 +115,7 @@ class ContactSection extends StatelessWidget {
   }
 }
 
-class ContactButton extends StatelessWidget {
+class ContactButton extends StatefulWidget {
   final String label;
   final String subtitle;
   final IconData icon;
@@ -128,6 +129,13 @@ class ContactButton extends StatelessWidget {
     required this.url,
   });
 
+  @override
+  State<ContactButton> createState() => _ContactButtonState();
+}
+
+class _ContactButtonState extends State<ContactButton> {
+  bool _isHovered = false;
+
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -139,34 +147,65 @@ class ContactButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ElevatedButton(
-      onPressed: () => _launchUrl(url),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            color: theme.colorScheme.primaryContainer,
-            width: 1,
+    return AnimatedContainer(
+      duration: 200.ms,
+      curve: Curves.easeOutCubic,
+      decoration: BoxDecoration(
+        color: _isHovered ? theme.colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: _isHovered ? theme.colorScheme.primary : theme.colorScheme.primaryContainer,
+          width: _isHovered ? 2 : 1,
+        ),
+        boxShadow: _isHovered
+            ? [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                  blurRadius: 12,
+                  spreadRadius: 2,
+                ),
+              ]
+            : null,
+      ),
+      child: ElevatedButton(
+        onPressed: () => _launchUrl(widget.url),
+        onHover: (hovered) {
+          setState(() {
+            _isHovered = hovered;
+          });
+        },
+        onFocusChange: (focused) {
+          setState(() {
+            _isHovered = focused;
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              widget.icon,
+              color: _isHovered ? theme.colorScheme.primary : null,
             ),
-          ),
-          Text(
-            subtitle,
-            style: theme.textTheme.bodySmall,
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              widget.label,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: _isHovered ? theme.colorScheme.primary : null,
+              ),
+            ),
+            Text(
+              widget.subtitle,
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
+        ),
       ),
     );
   }

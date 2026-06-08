@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:online_cv/models/social_link.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +78,11 @@ class HeroContent extends StatelessWidget {
               style: theme.textTheme.headlineLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(duration: 600.ms, delay: 100.ms)
+                .slideX(begin: -0.2, duration: 600.ms, delay: 100.ms)
+                .slideY(begin: 0.1, duration: 600.ms, delay: 100.ms),
             const SizedBox(height: 16),
             Text(
               state.heroSubtitle,
@@ -85,7 +90,11 @@ class HeroContent extends StatelessWidget {
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(duration: 500.ms, delay: 200.ms)
+                .slideX(begin: -0.2, duration: 500.ms, delay: 200.ms)
+                .slideY(begin: 0.1, duration: 500.ms, delay: 200.ms),
             const SizedBox(height: 24),
             Text(
               state.heroDescription,
@@ -94,7 +103,7 @@ class HeroContent extends StatelessWidget {
                 height: 1.6,
               ),
               semanticsLabel: state.heroSemanticsLabel,
-            ),
+            ).animate().fadeIn(duration: 500.ms, delay: 400.ms),
             const SizedBox(height: 32),
             Wrap(
               spacing: 16,
@@ -141,11 +150,24 @@ class ProfileImage extends StatelessWidget {
           ),
         ],
       ),
-        child: ClipRRect(
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.network(
           imageUrl,
           fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                    : null,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            );
+          },
           errorBuilder: (context, error, stackTrace) {
             return Container(
               color: Theme.of(context).colorScheme.surfaceContainer,
@@ -156,13 +178,18 @@ class ProfileImage extends StatelessWidget {
               ),
             );
           },
-        ),
+        ).animate().fadeIn(duration: 500.ms, delay: 300.ms).scale(
+            begin: const Offset(0.9, 0.9),
+            end: Offset(1, 1),
+            duration: 500.ms,
+            delay: 300.ms,
+            curve: Curves.easeOutCubic),
       ),
     );
   }
 }
 
-class SocialButton extends StatelessWidget {
+class SocialButton extends StatefulWidget {
   final String label;
   final String url;
   final IconData icon;
@@ -174,6 +201,13 @@ class SocialButton extends StatelessWidget {
     required this.icon,
   });
 
+  @override
+  State<SocialButton> createState() => _SocialButtonState();
+}
+
+class _SocialButtonState extends State<SocialButton> {
+  bool _isHovered = false;
+
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -183,12 +217,56 @@ class SocialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: () => _launchUrl(url),
-      icon: Icon(icon),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    return AnimatedContainer(
+      duration: 200.ms,
+      curve: Curves.easeOutCubic,
+      decoration: BoxDecoration(
+        color: _isHovered
+            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: _isHovered ? Theme.of(context).colorScheme.primary : Colors.transparent,
+          width: _isHovered ? 2 : 0,
+        ),
+        boxShadow: _isHovered
+            ? [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.primary.withValues(
+                        alpha: 0.15,
+                      ),
+                  blurRadius: 12,
+                  spreadRadius: 2,
+                ),
+              ]
+            : null,
+      ),
+      child: ElevatedButton.icon(
+        onPressed: () => _launchUrl(widget.url),
+        onHover: (hovered) {
+          setState(() {
+            _isHovered = hovered;
+          });
+        },
+        onFocusChange: (focused) {
+          setState(() {
+            _isHovered = focused;
+          });
+        },
+        icon: Icon(
+          widget.icon,
+          color: _isHovered ? Theme.of(context).colorScheme.primary : null,
+        ),
+        label: Text(
+          widget.label,
+          style: TextStyle(
+            color: _isHovered ? Theme.of(context).colorScheme.primary : null,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          elevation: _isHovered ? 4 : 0,
+        ),
       ),
     );
   }
