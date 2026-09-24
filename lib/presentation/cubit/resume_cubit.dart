@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:online_cv/models/education.dart';
 import 'package:online_cv/models/social_link.dart';
 import '../../data/repositories/resume_repository.dart';
 
@@ -24,10 +25,7 @@ class ResumeState {
   final List<SocialLink> socialLinks;
   final String educationSectionTitle;
   final String educationCardTitle;
-  final String degreeTitle;
-  final String degreeInstitution;
-  final String degreeDate;
-  final String degreeDescription;
+  final List<Education> educations;
   final String certificationsTitle;
   final List<Map<String, String>> certifications;
   final String contactSectionTitle;
@@ -50,10 +48,7 @@ class ResumeState {
     required this.aboutInfoItems,
     required this.educationSectionTitle,
     required this.educationCardTitle,
-    required this.degreeTitle,
-    required this.degreeInstitution,
-    required this.degreeDate,
-    required this.degreeDescription,
+    required this.educations,
     required this.certificationsTitle,
     required this.certifications,
     required this.contactSectionTitle,
@@ -93,10 +88,7 @@ class ResumeCubit extends Cubit<ResumeState> {
               aboutInfoItems: repo.getAboutInfoItems(),
               educationSectionTitle: repo.getEducationSectionTitle(),
               educationCardTitle: repo.getEducationCardTitle(),
-              degreeTitle: repo.getDegreeTitle(),
-              degreeInstitution: repo.getDegreeInstitution(),
-              degreeDate: repo.getDegreeDate(),
-              degreeDescription: repo.getDegreeDescription(),
+              educations: repo.getEducations(),
               certificationsTitle: repo.getCertificationsTitle(),
               certifications: repo.getCertifications(),
               contactSectionTitle: repo.getContactSectionTitle(),

@@ -79,33 +79,41 @@ class EducationCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  state.degreeTitle,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  state.degreeInstitution,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  state.degreeDate,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  state.degreeDescription,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    height: 1.5,
-                  ),
-                ),
+                ...state.educations.map((edu) => Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            edu.qualification,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${edu.institution}, ${edu.location}',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            edu.grade == null ? edu.date : '${edu.date} • ${edu.grade}',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            edu.description,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
               ],
             ),
           ),
@@ -164,7 +172,7 @@ class CertificationsCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Row(
+                          Wrap(
                             children: [
                               Text(
                                 cert['issuer'] ?? '',

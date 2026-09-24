@@ -56,6 +56,21 @@ class ExperienceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isNarrow = MediaQuery.sizeOf(context).width <= 600;
+    final dateChip = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Text(
+        experience.date,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.onPrimaryContainer,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
 
     return Card(
       margin: const EdgeInsets.only(bottom: 24),
@@ -68,6 +83,8 @@ class ExperienceCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                _buildLogo(theme),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,23 +103,14 @@ class ExperienceCard extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      if (isNarrow) ...[
+                        const SizedBox(height: 8),
+                        dateChip,
+                      ],
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(
-                    experience.date,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+                if (!isNarrow) dateChip,
               ],
             ),
             const SizedBox(height: 8),
@@ -156,6 +164,42 @@ class ExperienceCard extends StatelessWidget {
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogo(ThemeData theme) {
+    const size = 56.0;
+    final fallback = Container(
+      width: size,
+      height: size,
+      color: theme.colorScheme.primaryContainer,
+      child: Icon(
+        Icons.work_outline,
+        color: theme.colorScheme.onPrimaryContainer,
+      ),
+    );
+
+    return Semantics(
+      label: '${experience.company} logo',
+      image: true,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(11),
+          child: experience.logoPath == null
+              ? fallback
+              : Image.asset(
+                  experience.logoPath!,
+                  width: size,
+                  height: size,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => fallback,
+                ),
         ),
       ),
     );

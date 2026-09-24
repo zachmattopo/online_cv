@@ -1,3 +1,4 @@
+import 'package:online_cv/models/education.dart';
 import 'package:online_cv/models/social_link.dart';
 
 import '../../core/static_data.dart';
@@ -43,13 +44,7 @@ class ResumeRepository {
 
   String getEducationCardTitle() => educationCardTitle;
 
-  String getDegreeTitle() => degreeTitle;
-
-  String getDegreeInstitution() => degreeInstitution;
-
-  String getDegreeDate() => degreeDate;
-
-  String getDegreeDescription() => degreeDescription;
+  List<Education> getEducations() => educations;
 
   String getCertificationsTitle() => certificationsTitle;
 

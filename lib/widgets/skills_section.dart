@@ -33,23 +33,33 @@ class SkillsSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  // Use LayoutBuilder + Wrap so each card gets a fixed width (2 cols on wide screens, 1 on narrow)
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final spacing = 24.0;
+                  // Masonry layout: cards alternate between independent columns so
+                  // shorter cards don't leave gaps next to taller ones (2 cols on wide screens, 1 on narrow)
+                  Builder(
+                    builder: (context) {
+                      const spacing = 24.0;
                       final columnCount = screenWidth > 900 ? 2 : 1;
-                      final itemWidth =
-                          (constraints.maxWidth - spacing * (columnCount - 1)) / columnCount;
+                      final columns = List.generate(columnCount, (_) => <Widget>[]);
 
-                      return Wrap(
-                        spacing: spacing,
-                        runSpacing: spacing,
-                        children: state.skills.map((skill) {
-                          return SizedBox(
-                            width: itemWidth,
-                            child: SkillCard(skill: skill),
-                          );
-                        }).toList(),
+                      for (var i = 0; i < state.skills.length; i++) {
+                        final column = columns[i % columnCount];
+                        if (column.isNotEmpty) column.add(const SizedBox(height: spacing));
+                        column.add(SkillCard(skill: state.skills[i]));
+                      }
+
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var c = 0; c < columnCount; c++) ...[
+                            if (c > 0) const SizedBox(width: spacing),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: columns[c],
+                              ),
+                            ),
+                          ],
+                        ],
                       );
                     },
                   ),
