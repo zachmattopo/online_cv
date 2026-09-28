@@ -19,6 +19,18 @@ class VisitorCounterSection extends StatelessWidget {
   static final ScalableImageSource _badgeSource =
       ScalableImageSource.fromSvgHttpUrl(Uri.parse(_badgeUrl));
 
+  /// Fetches the badge (which registers the visit) as soon as the page loads,
+  /// instead of waiting for this lazily built footer to scroll into view. The
+  /// reference is never released, so the footer reuses the cached badge
+  /// without a second request.
+  static void preload() {
+    final si = _badgeCache.addReferenceV2(_badgeSource);
+    if (si is Future<ScalableImage>) {
+      // Errors are shown by the badge widget itself; avoid an unhandled error.
+      si.ignore();
+    }
+  }
+
   Future<void> _openStats() async {
     final uri = Uri.parse(_statsUrl);
     if (await canLaunchUrl(uri)) {

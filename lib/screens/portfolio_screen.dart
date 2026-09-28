@@ -34,6 +34,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
   @override
   void initState() {
+    VisitorCounterSection.preload();
     _scrollController.addListener(() {
       final visible = _scrollController.offset > 0;
       if (visible != _isFabVisible) {
