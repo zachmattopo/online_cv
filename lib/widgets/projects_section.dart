@@ -70,7 +70,12 @@ class _ProjectCard extends StatelessWidget {
     final p = HnPalette.of(context);
     final narrow = !HnLayout.isDesktop(context);
     final url = project.url;
-    final host = url == null ? null : Uri.tryParse(url)?.host.replaceFirst('www.', '');
+    // Host plus path (no scheme), so sites that live under a path, like a
+    // GitHub Pages project, show their full address.
+    final uri = url == null ? null : Uri.tryParse(url);
+    final host = uri == null
+        ? null
+        : '${uri.host.replaceFirst('www.', '')}${uri.path}'.replaceFirst(RegExp(r'/$'), '');
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 22, 24, 22),
       decoration: BoxDecoration(
