@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-/// A footer section that displays a visitor counter badge and a link to view
-/// visitor statistics over time. Uses visitorbadge.io — a free, zero-config
-/// service that increments a counter every time the badge image is loaded.
+import '../theme/hn_theme.dart';
+import 'hn_widgets.dart';
+
+/// Footer with the visitor counter badge and a link to its statistics.
+/// Uses visitorbadge.io — a free, zero-config service that increments a
+/// counter every time the badge image is loaded.
 class VisitorCounterSection extends StatelessWidget {
   const VisitorCounterSection({super.key});
 
@@ -31,71 +33,61 @@ class VisitorCounterSection extends StatelessWidget {
     }
   }
 
-  Future<void> _openStats() async {
-    final uri = Uri.parse(_statsUrl);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final p = HnPalette.of(context);
+    final width = MediaQuery.sizeOf(context).width;
+    final desktop = width >= HnLayout.desktopBreakpoint;
+    final note = HnType.body(p.mute, size: 12.5).copyWith(height: 1.5);
+
+    final badge = ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 110, maxWidth: 220, maxHeight: 20),
+      child: ScalableImageWidget.fromSISource(
+        si: _badgeSource,
+        cache: _badgeCache,
+        fit: BoxFit.contain,
+        alignment: Alignment.centerLeft,
+        onLoading: (_) => Text('Counting visits…', style: note, maxLines: 1),
+        onError: (_) => Text('Counter offline', style: note, maxLines: 1),
+      ),
+    );
+
+    final credit = Text(
+      '© ${DateTime.now().year} Hafiz Nordin. Built in Flutter: one fragment shader, a lot of dither.',
+      style: note,
+    );
 
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 24),
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
-          ),
-        ),
+      color: p.paper,
+      padding: EdgeInsets.fromLTRB(
+        HnLayout.gutter(width),
+        28,
+        HnLayout.gutter(width),
+        desktop ? HnLayout.laneHeight + 56 : 56 + 32,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Visitor counter badge — loading this image registers a visit
-          ScalableImageWidget.fromSISource(
-            si: _badgeSource,
-            cache: _badgeCache,
-            fit: BoxFit.contain,
-            alignment: Alignment.center,
-            onLoading: (_) => Center(
-              child: Text(
-                'Loading visitor counter...',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+      decoration: null,
+      child: DecoratedBox(
+        decoration: BoxDecoration(border: Border(top: BorderSide(color: p.hair))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 24),
+          child: desktop
+              ? Row(
+                  children: [
+                    Expanded(child: credit),
+                    badge,
+                    const SizedBox(width: 18),
+                    const HnTextLink('Visitor stats', url: _statsUrl, size: 12.5),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    credit,
+                    const SizedBox(height: 14),
+                    Row(children: [badge, const SizedBox(width: 14), const HnTextLink('Visitor stats', url: _statsUrl, size: 12.5)]),
+                  ],
                 ),
-              ),
-            ),
-            onError: (_) => Center(
-              child: Text(
-                'Visitor counter unavailable',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextButton.icon(
-            onPressed: _openStats,
-            icon: Icon(
-              Icons.bar_chart_rounded,
-              size: 18,
-              color: theme.colorScheme.primary,
-            ),
-            label: Text(
-              'View visitor statistics',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

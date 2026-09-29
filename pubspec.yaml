@@ -11,13 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   jovial_svg: ^1.1.29
-  google_fonts: ^8.1.0
-  phosphor_flutter: ^2.1.0
   super_sliver_list: ^0.4.1
   url_launcher: ^6.3.2
   bloc: ^9.2.0
   flutter_bloc: ^9.1.1
-  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_lints: ^6.0.0
@@ -28,7 +25,20 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/globe/
+
+  shaders:
+    - shaders/globe.frag
+
+  fonts:
+    - family: LibreCaslonText
+      fonts:
+        - asset: assets/fonts/LibreCaslonText.ttf
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono.ttf
 
 flutter_native_splash:
-  color: '#0284C7'
+  color: '#FFFFFF'
+  color_dark: '#0F0F0E'
   image: 'assets/images/splash_image.png'

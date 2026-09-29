@@ -1,0 +1,4 @@
+{
+  "prompt": "Origin: baked, not generated. Land coverage rasterised to a 4096x2048 equirectangular mask from Natural Earth 1:10m land (public domain) via the world-atlas@2 package (land-10m.json), with d3-geo, by .impeccable/mocks/src/textures.html?t=mask; converted to lossless grayscale WebP.",
+  "createdAt": "2026-09-29T02:04:01.605Z"
+}
