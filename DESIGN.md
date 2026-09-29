@@ -267,7 +267,7 @@ An 8px band of 2px ink cells thresholded against a 4×4 Bayer matrix, dense (62%
 11×11 bitmaps (sun, moon, menu, prompt, arrowUpRight) drawn cell by cell without anti-aliasing at `cell` 1.5 or 2px. No icon font is shipped.
 
 ### LiveDot and Caption
-`LiveDot`: a 6 to 7px green circle with a 3px spread ring of green at 18% alpha. `Caption`: uppercase mono label in mute, used as a field label beside or above data (period, contact channel, meta key, skill level), never as a heading kicker.
+`LiveDot`: a 6 to 7px green circle with a 3px spread ring of green at 18% alpha. `Caption`: uppercase mono label in mute, used as a field label beside or above data (period, contact channel, meta key), never as a heading kicker.
 
 ### The Globe (signature; `shaders/globe.frag`, `lib/globe/globe_view.dart`)
 - **Material:** each 2px cell is shaded once and thresholded against a 4×4 Bayer matrix, so the output is only ink, paper, or slate. Land density comes from a land mask plus Blue Marble luminance (`assets/globe/`), with fixed top-left lighting, limb darkening and lighter polar caps. Ocean is near-empty with a 10° graticule of alternating cells (light) or a sparse grid (dark). A 7px dotted atmosphere sits just outside the limb.

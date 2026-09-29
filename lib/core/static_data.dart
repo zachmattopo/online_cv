@@ -4,7 +4,6 @@ import '../models/journey_stop.dart';
 import '../models/project.dart';
 import '../models/skill.dart';
 import '../models/social_link.dart';
-import 'package:flutter/material.dart';
 
 // App-level static strings and data consolidated here
 const String appTitle = 'Hafiz Nordin | Online CV';
@@ -228,77 +227,73 @@ final List<Experience> staticExperiences = [
   ),
 ];
 
-final List<Skill> staticSkills = [
+/// Skills grouped by what they're for. Each tool appears once.
+const List<Skill> staticSkills = [
   Skill(
-    name: 'Mobile Technologies',
-    level: 'Advanced',
-    icon: Icons.phone_android,
+    name: 'Mobile',
     technologies: [
       'Flutter',
       'Dart',
       'iOS',
       'Android',
       'Swift',
-      'REST API',
-      'Local database (SQL & NoSQL)',
       'State management (BLoC / Stateful / etc.)',
-      'Geolocation',
+      'Local database (SQL & NoSQL)',
+      'REST API',
       'Real-time comms (WebSocket)',
+      'Geolocation',
     ],
   ),
   Skill(
-    name: 'Development Tools',
-    level: 'Advanced',
-    icon: Icons.build,
+    name: 'Web',
     technologies: [
-      'Git',
-      'Jira',
+      'Jaspr (Dart web framework)',
+      'HTML',
+      'jQuery',
+      'Java',
+      'Spring Boot',
+    ],
+  ),
+  Skill(
+    name: 'Backend & Cloud',
+    technologies: [
+      'Firebase Firestore',
+      'Firebase Cloud Functions',
+      'Firebase Remote Config',
+      'Firebase App Check',
       'AWS S3',
-      'Confluence',
-      'VS Code',
-      'Xcode',
-      'Postman',
+    ],
+  ),
+  Skill(
+    name: 'Monitoring, CMS & CI/CD',
+    technologies: [
       'GitHub Actions CI/CD',
+      'Codemagic CI/CD',
+      'Firebase Crashlytics',
+      'Firebase Performance Monitoring',
+      'Dynatrace',
+      'Adobe Experience Manager (AEM)',
+    ],
+  ),
+  Skill(
+    name: 'AI-Assisted Development',
+    technologies: [
       'Agentic AI Coding',
       'Claude Code',
       'GitHub Copilot',
       'OpenCode',
       'Local LLMs',
-      'Firebase Firestore',
-      'Firebase Cloud Functions',
-      'Firebase Remote Config',
-      'Firebase App Check',
-      'Firebase Crashlytics',
-      'Firebase Performance Monitoring',
     ],
   ),
   Skill(
-    name: 'Web Frameworks',
-    level: 'Advanced',
-    icon: Icons.language,
+    name: 'Tools & Collaboration',
     technologies: [
-      'Jaspr (Dart web framework)',
-    ],
-  ),
-  Skill(
-    name: 'Web Technologies',
-    level: 'Intermediate',
-    icon: Icons.web,
-    technologies: [
-      'Java',
-      'jQuery',
-      'HTML',
-      'Spring Boot',
-    ],
-  ),
-  Skill(
-    name: 'Monitoring, CMS & CI/CD',
-    level: 'Intermediate',
-    icon: Icons.analytics,
-    technologies: [
-      'Adobe Experience Manager (AEM)',
-      'Dynatrace',
-      'Codemagic CI/CD',
+      'Git',
+      'VS Code',
+      'Xcode',
+      'Postman',
+      'Jira',
+      'Confluence',
     ],
   ),
 ];
@@ -428,7 +423,7 @@ const List<Map<String, String>> contactInfoItems = [
 const String projectsTitle = 'Projects';
 const String projectsSubtitle = 'Two shipped side projects, both written in Dart.';
 const String stackTitle = 'Stack';
-const String stackSubtitle = 'What I reach for, grouped by how well I know it.';
+const String stackSubtitle = 'What I reach for, grouped by what it’s for.';
 const String plainCvTitle = 'Plain CV';
 const String plainCvSubtitle = 'Everything above, without the globe.';
 const String contactTitle = 'Let’s talk.';

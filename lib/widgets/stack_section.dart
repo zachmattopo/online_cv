@@ -46,14 +46,7 @@ class _SkillRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = HnPalette.of(context);
-    final head = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(skill.name, style: HnType.body(p.ink, size: 15, weight: FontWeight.w700).copyWith(height: 1.4)),
-        const SizedBox(height: 4),
-        Caption(skill.level, color: skill.level == 'Advanced' ? p.accent : p.mute),
-      ],
-    );
+    final head = Text(skill.name, style: HnType.body(p.ink, size: 15, weight: FontWeight.w700).copyWith(height: 1.4));
     final tools = Wrap(
       spacing: 8,
       runSpacing: 8,
