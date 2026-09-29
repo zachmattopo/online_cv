@@ -109,7 +109,11 @@ void main() {
     float glow = smoothstep(0.28, 0.8, aux.b);
     float spark = night * step(1.0 - glow * 0.5, hash(cell));
     if (uDark > 0.5) {
-      v = mix(v * 0.85, 0.46, night * 0.75);
+      // Ink is light here, so density reads as sunlight: the day side is
+      // lit bright, the night side drops to a sparse floor that still
+      // keeps coastlines readable.
+      float day = clamp(0.38 + v * 0.6, 0.0, 0.92);
+      v = mix(day, 0.22, night);
       v = spark > 0.5 ? 1.0 : v;
     } else {
       v = mix(v, 0.8, night * 0.85);
@@ -117,7 +121,8 @@ void main() {
     }
   } else {
     v = 0.035 + limb * 0.3 + (1.0 - lit) * 0.08;
-    v = uDark > 0.5 ? v * (1.0 - 0.6 * night) : v + night * 0.2;
+    // Dark theme: a visibly lit day-side sea, a near-empty night-side sea.
+    v = uDark > 0.5 ? mix(0.1 + limb * 0.25, 0.015 + limb * 0.04, night) : v + night * 0.2;
     float wLat = 0.55 * cellDeg;
     float wLon = wLat / max(cos(lat), 0.08);
     float onLat = step(5.0 - wLat, abs(mod(latD, 10.0) - 5.0));
