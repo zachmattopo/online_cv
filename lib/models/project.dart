@@ -6,6 +6,9 @@ class Project {
   final String? url;
   final String? imagePath;
 
+  /// Variant of [imagePath] for dark backgrounds, when the logo needs one.
+  final String? darkImagePath;
+
   const Project({
     required this.name,
     required this.description,
@@ -13,5 +16,6 @@ class Project {
     this.highlights = const [],
     this.url,
     this.imagePath,
+    this.darkImagePath,
   });
 }

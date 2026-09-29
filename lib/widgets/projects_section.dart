@@ -87,12 +87,16 @@ class _ProjectCard extends StatelessWidget {
               if (project.imagePath != null) ...[
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(2),
-                    child: Image.asset(project.imagePath!, fit: BoxFit.contain, excludeFromSemantics: true),
+                  // No backing tile: each logo sits on the page's own paper, with a
+                  // dark-background variant where the artwork needs one.
+                  child: Image.asset(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? (project.darkImagePath ?? project.imagePath!)
+                        : project.imagePath!,
+                    // Height-led so wide wordmarks keep their proportions.
+                    height: narrow ? 32 : 40,
+                    fit: BoxFit.contain,
+                    excludeFromSemantics: true,
                   ),
                 ),
                 const SizedBox(width: 14),

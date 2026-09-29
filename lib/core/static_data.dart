@@ -333,6 +333,7 @@ final List<Project> staticProjects = [
     ],
     url: 'https://zachmattopo.github.io/movement_to_work',
     imagePath: 'assets/images/mtw_logo.png',
+    darkImagePath: 'assets/images/mtw_logo_dark.png',
   ),
 ];
 
