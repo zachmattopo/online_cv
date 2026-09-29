@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:math' as math;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 import '../core/motion_prefs.dart';
+import '../globe/globe_grip.dart';
 import '../globe/globe_math.dart';
 import '../globe/globe_view.dart';
 import '../globe/journey_timeline.dart';
@@ -63,7 +66,38 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
   Timer? _clockTimer;
   late final Ticker _spin;
   double _heroLon = -10;
+  double _heroLat = 24;
   Duration _lastSpin = Duration.zero;
+
+  // Hero globe interaction: the reader can grab and spin it.
+  final ValueNotifier<bool> _gripEnabled = ValueNotifier(true);
+  bool _dragging = false;
+  double _spinVelocity = 0; // extra °/s from a flick, decays back to idle
+
+  static const double _idleSpin = 3.2; // °/s
+
+  void _onGrab() {
+    _dragging = true;
+    _spinVelocity = 0;
+  }
+
+  void _onGripDrag(double dLon, double dLat) {
+    _heroLon = (_heroLon + dLon + 180) % 360 - 180;
+    _heroLat = (_heroLat + dLat).clamp(-60.0, 75.0);
+    _update();
+  }
+
+  void _onRelease(double lonPerSecond) {
+    _dragging = false;
+    // Keep the flick's momentum (minus the idle spin it resumes into).
+    _spinVelocity = _reduceMotion ? 0 : (lonPerSecond - _idleSpin).clamp(-720.0, 720.0);
+  }
+
+  void _onGripScroll(PointerScrollEvent e) {
+    if (!_scrollController.hasClients) return;
+    final pos = _scrollController.position;
+    pos.jumpTo((pos.pixels + e.scrollDelta.dy).clamp(pos.minScrollExtent, pos.maxScrollExtent));
+  }
 
   @override
   void initState() {
@@ -104,8 +138,11 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
     _lastSpin = elapsed;
     final offset = _scrollController.hasClients ? _scrollController.offset : 0.0;
     // Only the hero spins; once the camera leaves it the ticker idles.
-    if (offset > _viewport.height * 0.3) return;
-    _heroLon = (_heroLon + dt * 3.2 + 180) % 360 - 180;
+    if (offset > _viewport.height * 0.3 || _dragging) return;
+    // A flick carries on and decays back into the slow idle spin.
+    _spinVelocity *= math.exp(-dt * 2.2);
+    if (_spinVelocity.abs() < 0.05) _spinVelocity = 0;
+    _heroLon = (_heroLon + dt * (_idleSpin + _spinVelocity) + 180) % 360 - 180;
     _update();
   }
 
@@ -128,6 +165,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
       firstStopItem: _firstStopItem,
       reduceMotion: _reduceMotion,
       heroLon: _heroLon,
+      heroLat: _heroLat,
     );
   }
 
@@ -136,6 +174,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
     if (tl == null) return;
     final s = _scrollController.hasClients ? _scrollController.offset : 0.0;
     _frame.value = tl.frameAt(s);
+    // The globe is grabbable only while the page rests on the hero.
+    _gripEnabled.value = _frame.value.activeStop < 0 && s < _viewport.height * 0.3;
     _activeStop.value = tl.activeStopAt(s);
     final h = _viewport.height, end = tl.journeyEnd;
     // Nav highlight: Journey, Projects, Stack, Plain CV (−1 in the hero).
@@ -201,6 +241,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
     _activeStop.dispose();
     _activeNav.dispose();
     _band.dispose();
+    _gripEnabled.dispose();
     super.dispose();
   }
 
@@ -289,6 +330,17 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
                       child: globe,
                     ),
                   ),
+                Positioned.fill(
+                  child: GlobeGrip(
+                    frame: _frame,
+                    enabled: _gripEnabled,
+                    allowTilt: desktop,
+                    onStart: _onGrab,
+                    onDrag: _onGripDrag,
+                    onEnd: _onRelease,
+                    onScroll: _onGripScroll,
+                  ),
+                ),
                 Positioned(
                   left: 0,
                   right: 0,

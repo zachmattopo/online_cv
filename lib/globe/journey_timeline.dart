@@ -23,8 +23,9 @@ class JourneyTimeline {
   final int firstStopItem;
   final bool reduceMotion;
 
-  /// Longitude of the idle hero spin.
+  /// Where the hero globe faces: the idle spin plus any drag by the reader.
   final double heroLon;
+  final double heroLat;
 
   const JourneyTimeline({
     required this.viewport,
@@ -34,6 +35,7 @@ class JourneyTimeline {
     required this.firstStopItem,
     required this.reduceMotion,
     required this.heroLon,
+    this.heroLat = 24,
   });
 
   bool get desktop => viewport.width >= HnLayout.desktopBreakpoint;
@@ -58,7 +60,7 @@ class JourneyTimeline {
       final r = math.min(w * 0.29, h * 0.40);
       final x = math.min(w * 0.71, w - r - 40);
       return GlobeFrame(
-        camera: GlobeCamera(focusLon: heroLon, focusLat: 24, radius: r, anchor: Offset(x, h * 0.53)),
+        camera: GlobeCamera(focusLon: heroLon, focusLat: heroLat, radius: r, anchor: Offset(x, h * 0.53)),
         fadeX0: colRight - 140,
         fadeX1: colRight - 40,
       );
@@ -68,7 +70,7 @@ class JourneyTimeline {
     return GlobeFrame(
       camera: GlobeCamera(
         focusLon: heroLon,
-        focusLat: 24,
+        focusLat: heroLat,
         radius: r,
         anchor: Offset(w / 2, HnLayout.navHeight + band * 0.52),
       ),
