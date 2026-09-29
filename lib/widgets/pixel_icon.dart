@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum PixelGlyph { sun, moon, menu, prompt, arrowUpRight }
+enum PixelGlyph { sun, moon, menu, prompt, search, arrowUpRight }
 
 /// 11×11 bitmap icons drawn on the same hard pixel grid as the display
 /// type, so the chrome shares one grammar (and no icon font is shipped).
@@ -65,6 +65,19 @@ class PixelIcon extends StatelessWidget {
       '...#.......',
       '...........',
       '...........',
+    ],
+    PixelGlyph.search: [
+      '..####.....',
+      '.#....#....',
+      '#......#...',
+      '#......#...',
+      '#......#...',
+      '#......#...',
+      '.#....#....',
+      '..####.##..',
+      '.......###.',
+      '........###',
+      '.........##',
     ],
     PixelGlyph.arrowUpRight: [
       '...........',

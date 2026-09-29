@@ -154,7 +154,7 @@ class _FastLaneState extends State<FastLane> {
         ),
         child: Row(
           children: [
-            PixelIcon(PixelGlyph.prompt, color: p.accent, cell: 1.5),
+            PixelIcon(PixelGlyph.search, color: p.accent, cell: 1.5),
             const SizedBox(width: 8),
             SizedBox(
               width: (width * 0.16 - 40).clamp(160.0, 260.0),
