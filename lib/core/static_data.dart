@@ -33,7 +33,7 @@ const List<String> navLabels = [
 // Hero copy for the globe page. `**double asterisks**` mark bold runs.
 const String heroTagline = 'Senior Software Engineer. Eight years shipping iOS, Android and Flutter apps.';
 const String heroLede =
-    'Self-taught developer with a mechanical engineering degree from Vanderbilt. Born and raised in Malaysia, now in the UK: **available immediately, no sponsorship needed**. Scroll to follow the route backwards, or jump to any stop below.';
+    'Self-taught developer with a mechanical engineering degree from Vanderbilt, USA. Born and raised in Malaysia, now in the UK: **available for work, no sponsorship needed**. Scroll to follow the route backwards, or jump to any stop below.';
 
 // Where Hafiz is now, for the live clock in the nav and hero.
 const String homeCity = 'Aberdeen';
@@ -63,7 +63,7 @@ const String sectionSkills = 'Skills & Technologies';
 const String aboutSectionTitle = 'About Me';
 const String aboutSummaryTitle = 'Professional Summary';
 const String aboutSummary =
-    'Senior Mobile Engineer with 8 years of experience delivering iOS and Android apps across telecoms, HR, oil and gas, and healthcare. Shipped Flutter features for BT/EE\'s 10M+ user app, improving customer satisfaction by 15% while sustaining 99.7% crash-free performance, and helped raise GoGetter\'s store ratings to 4.6 on Google Play and 4.3 on the App Store. Expertise includes Flutter, Dart, Firebase, BLoC/Cubit, REST APIs, offline-first design, app security, accessibility, and high-quality cross-functional delivery. More recently, has expanded into agentic AI development through hands-on work with GitHub Copilot, OpenCode, and local LLMs to build modern software products independently. Available immediately in the UK with no sponsorship required.';
+    'Senior Mobile Engineer with 8 years of experience delivering iOS and Android apps across telecoms, HR, oil and gas, and healthcare. Shipped Flutter features for BT/EE\'s 10M+ user app, improving customer satisfaction by 15% while sustaining 99.7% crash-free performance, and helped raise GoGetter\'s store ratings to 4.6 on Google Play and 4.3 on the App Store. Expertise includes Flutter, Dart, Firebase, BLoC/Cubit, REST APIs, offline-first design, app security, accessibility, and high-quality cross-functional delivery. More recently, has expanded into agentic AI development through hands-on work with Claude, Copilot, OpenCode, and local LLMs to build modern software products independently. Available for work in the UK with no sponsorship required.';
 
 const List<Map<String, String>> aboutInfoItems = [
   {'label': 'Location', 'value': 'United Kingdom'},
@@ -83,7 +83,7 @@ final List<Experience> staticExperiences = [
     highlights: [
       'Built WhereToFuel, a real-time UK fuel-price finder using Flutter, Firebase and Node.js/TypeScript, with Firestore geospatial queries, Hive cache, scheduled Cloud Functions, Firebase App Check and security rules.',
       'Designed and developed the Movement to Work campaign website for Jobcentre Plus Aberdeen using Dart/Jaspr, semantic HTML and Tailwind CSS; configured automated GitHub Pages deployment through GitHub Actions.',
-      'Continued structured professional development in agentic AI-assisted engineering, using GitHub Copilot, OpenCode and local LLMs while independently reviewing outputs and applying engineering judgement.',
+      'Continued structured professional development in agentic AI-assisted engineering, using Claude Code, GitHub Copilot, OpenCode and local LLMs while independently reviewing outputs and applying engineering judgement.',
     ],
   ),
   Experience(
@@ -446,7 +446,7 @@ final List<JourneyStop> journeyStops = [
     year: '2026',
     subhead: 'Independent software developer, Jan 2026 → now.',
     summary:
-        'Shipping independent work since January 2026: **WhereToFuel**, a real-time UK fuel-price finder in Flutter and Firebase, and the **Movement to Work campaign site** for Jobcentre Plus Aberdeen in Dart and Jaspr. Alongside both, structured practice in **agentic AI engineering** with Copilot, OpenCode and local LLMs, every output reviewed by hand.',
+        'Shipping independent work since January 2026: **WhereToFuel**, a real-time UK fuel-price finder in Flutter and Firebase, and the **Movement to Work campaign site** for Jobcentre Plus Aberdeen in Dart and Jaspr. Alongside both, structured practice in **agentic AI engineering** with Claude, Copilot, OpenCode and local LLMs, every output reviewed by hand.',
     facts: const {
       'status': 'available immediately',
       'uk_visa_sponsorship': 'not needed',
@@ -544,7 +544,7 @@ final List<JourneyStop> journeyStops = [
     lon: 102.2829,
     zone: StopZone.malaysia,
     year: '2009',
-    subhead: 'Science stream, MARA Junior Science College Pengkalan Chepa, 2009 → 2010.',
+    subhead: 'Science stream, MARA Junior Science College (MRSM) Pengkalan Chepa, 2009 → 2010.',
     summary:
         'Where it started. Graduated with **straight 9A+ in SPM** (the GCSE equivalent), won MARA’s **Outstanding Student Achievement Award** in 2011, and earned the government scholarship that took me to Vanderbilt.',
     facts: const {
