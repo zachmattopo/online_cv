@@ -1,5 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:online_cv/models/education.dart';
+import 'package:online_cv/models/experience.dart';
+import 'package:online_cv/models/journey_stop.dart';
+import 'package:online_cv/models/project.dart';
+import 'package:online_cv/models/skill.dart';
 import 'package:online_cv/models/social_link.dart';
 import '../../data/repositories/resume_repository.dart';
 
@@ -18,10 +22,23 @@ class ResumeState {
   final String sectionExperience;
   final String sectionProjects;
   final String sectionSkills;
-  final List experiences;
-  final List projects;
-  final List skills;
-  final List navLabels;
+  final List<Experience> experiences;
+  final List<Project> projects;
+  final List<Skill> skills;
+  final List<String> navLabels;
+  final List<JourneyStop> journeyStops;
+  final String heroTagline;
+  final String heroLede;
+  final String homeCity;
+  final StopZone homeZone;
+  final String projectsTitle;
+  final String projectsSubtitle;
+  final String stackTitle;
+  final String stackSubtitle;
+  final String plainCvTitle;
+  final String plainCvSubtitle;
+  final String contactTitle;
+  final String contactSubtitle;
   final List<SocialLink> socialLinks;
   final String educationSectionTitle;
   final String educationCardTitle;
@@ -31,7 +48,7 @@ class ResumeState {
   final String contactSectionTitle;
   final String contactCardTitle;
   final String contactSummary;
-  final List<Map<String, dynamic>> contactButtons;
+  final List<Map<String, String>> contactButtons;
   final List<Map<String, String>> contactInfoItems;
 
   ResumeState({
@@ -64,6 +81,19 @@ class ResumeState {
     required this.sectionExperience,
     required this.sectionProjects,
     required this.sectionSkills,
+    required this.journeyStops,
+    required this.heroTagline,
+    required this.heroLede,
+    required this.homeCity,
+    required this.homeZone,
+    required this.projectsTitle,
+    required this.projectsSubtitle,
+    required this.stackTitle,
+    required this.stackSubtitle,
+    required this.plainCvTitle,
+    required this.plainCvSubtitle,
+    required this.contactTitle,
+    required this.contactSubtitle,
   });
 }
 
@@ -104,6 +134,19 @@ class ResumeCubit extends Cubit<ResumeState> {
               sectionExperience: repo.getSectionExperience(),
               sectionProjects: repo.getSectionProjects(),
               sectionSkills: repo.getSectionSkills(),
+              journeyStops: repo.getJourneyStops(),
+              heroTagline: repo.getHeroTagline(),
+              heroLede: repo.getHeroLede(),
+              homeCity: repo.getHomeCity(),
+              homeZone: repo.getHomeZone(),
+              projectsTitle: repo.getProjectsTitle(),
+              projectsSubtitle: repo.getProjectsSubtitle(),
+              stackTitle: repo.getStackTitle(),
+              stackSubtitle: repo.getStackSubtitle(),
+              plainCvTitle: repo.getPlainCvTitle(),
+              plainCvSubtitle: repo.getPlainCvSubtitle(),
+              contactTitle: repo.getContactTitle(),
+              contactSubtitle: repo.getContactSubtitle(),
             );
           })(),
         );

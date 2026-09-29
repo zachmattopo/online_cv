@@ -1,11 +1,9 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-
 import '../models/education.dart';
 import '../models/experience.dart';
+import '../models/journey_stop.dart';
 import '../models/project.dart';
 import '../models/skill.dart';
 import '../models/social_link.dart';
-import 'package:flutter/material.dart';
 
 // App-level static strings and data consolidated here
 const String appTitle = 'Hafiz Nordin | Online CV';
@@ -25,29 +23,33 @@ const String heroSemanticsLabel =
 const String profileImageUrl = 'https://avatars.githubusercontent.com/u/39941205?v=4';
 
 const List<String> navLabels = [
-  'About',
-  'Experience',
+  'Journey',
   'Projects',
-  'Skills',
-  'Education',
-  'Contact',
+  'Stack',
+  'Plain CV',
 ];
 
-List<SocialLink> socialLinks = [
+// Hero copy for the globe page. `**double asterisks**` mark bold runs.
+const String heroTagline = 'Senior Software Engineer. Eight years shipping iOS, Android and Flutter apps.';
+const String heroLede =
+    'Self-taught developer with a mechanical engineering degree from Vanderbilt, USA. Born and raised in Malaysia, now in the UK: **available for work, no sponsorship needed**. Scroll to follow the route backwards, or jump to any stop below.';
+
+// Where Hafiz is now, for the live clock in the nav and hero.
+const String homeCity = 'Aberdeen';
+const StopZone homeZone = StopZone.uk;
+
+const List<SocialLink> socialLinks = [
   SocialLink(
     label: 'LinkedIn',
     url: 'https://www.linkedin.com/in/hafiznordin/',
-    icon: PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
   ),
   SocialLink(
     label: 'GitHub',
     url: 'https://github.com/zachmattopo',
-    icon: PhosphorIcons.githubLogo(),
   ),
   SocialLink(
     label: 'Stack Overflow',
     url: 'https://stackoverflow.com/users/9166207/hafiz',
-    icon: PhosphorIcons.stackOverflowLogo(),
   ),
 ];
 
@@ -60,7 +62,7 @@ const String sectionSkills = 'Skills & Technologies';
 const String aboutSectionTitle = 'About Me';
 const String aboutSummaryTitle = 'Professional Summary';
 const String aboutSummary =
-    'Senior Mobile Engineer with 8 years of experience delivering iOS and Android apps across telecoms, HR, oil and gas, and healthcare. Shipped Flutter features for BT/EE\'s 10M+ user app, improving customer satisfaction by 15% while sustaining 99.7% crash-free performance, and helped raise GoGetter\'s store ratings to 4.6 on Google Play and 4.3 on the App Store. Expertise includes Flutter, Dart, Firebase, BLoC/Cubit, REST APIs, offline-first design, app security, accessibility, and high-quality cross-functional delivery. More recently, has expanded into agentic AI development through hands-on work with GitHub Copilot, OpenCode, and local LLMs to build modern software products independently. Available immediately in the UK with no sponsorship required.';
+    'Senior Mobile Engineer with 8 years of experience delivering iOS and Android apps across telecoms, HR, oil and gas, and healthcare. Shipped Flutter features for BT/EE\'s 10M+ user app, improving customer satisfaction by 15% while sustaining 99.7% crash-free performance, and helped raise GoGetter\'s store ratings to 4.6 on Google Play and 4.3 on the App Store. Expertise includes Flutter, Dart, Firebase, BLoC/Cubit, REST APIs, offline-first design, app security, accessibility, and high-quality cross-functional delivery. More recently, has expanded into agentic AI development through hands-on work with Claude, Copilot, OpenCode, and local LLMs to build modern software products independently. Available for work in the UK with no sponsorship required.';
 
 const List<Map<String, String>> aboutInfoItems = [
   {'label': 'Location', 'value': 'United Kingdom'},
@@ -80,7 +82,7 @@ final List<Experience> staticExperiences = [
     highlights: [
       'Built WhereToFuel, a real-time UK fuel-price finder using Flutter, Firebase and Node.js/TypeScript, with Firestore geospatial queries, Hive cache, scheduled Cloud Functions, Firebase App Check and security rules.',
       'Designed and developed the Movement to Work campaign website for Jobcentre Plus Aberdeen using Dart/Jaspr, semantic HTML and Tailwind CSS; configured automated GitHub Pages deployment through GitHub Actions.',
-      'Continued structured professional development in agentic AI-assisted engineering, using GitHub Copilot, OpenCode and local LLMs while independently reviewing outputs and applying engineering judgement.',
+      'Continued structured professional development in agentic AI-assisted engineering, using Claude Code, GitHub Copilot, OpenCode and local LLMs while independently reviewing outputs and applying engineering judgement.',
     ],
   ),
   Experience(
@@ -225,77 +227,73 @@ final List<Experience> staticExperiences = [
   ),
 ];
 
-final List<Skill> staticSkills = [
+/// Skills grouped by what they're for. Each tool appears once.
+const List<Skill> staticSkills = [
   Skill(
-    name: 'Mobile Technologies',
-    level: 'Advanced',
-    icon: Icons.phone_android,
+    name: 'Mobile',
     technologies: [
       'Flutter',
       'Dart',
       'iOS',
       'Android',
       'Swift',
-      'REST API',
-      'Local database (SQL & NoSQL)',
       'State management (BLoC / Stateful / etc.)',
-      'Geolocation',
+      'Local database (SQL & NoSQL)',
+      'REST API',
       'Real-time comms (WebSocket)',
+      'Geolocation',
     ],
   ),
   Skill(
-    name: 'Development Tools',
-    level: 'Advanced',
-    icon: Icons.build,
+    name: 'Web',
     technologies: [
-      'Git',
-      'Jira',
+      'Jaspr (Dart web framework)',
+      'HTML',
+      'jQuery',
+      'Java',
+      'Spring Boot',
+    ],
+  ),
+  Skill(
+    name: 'Backend & Cloud',
+    technologies: [
+      'Firebase Firestore',
+      'Firebase Cloud Functions',
+      'Firebase Remote Config',
+      'Firebase App Check',
       'AWS S3',
-      'Confluence',
-      'VS Code',
-      'Xcode',
-      'Postman',
+    ],
+  ),
+  Skill(
+    name: 'Monitoring, CMS & CI/CD',
+    technologies: [
       'GitHub Actions CI/CD',
+      'Codemagic CI/CD',
+      'Firebase Crashlytics',
+      'Firebase Performance Monitoring',
+      'Dynatrace',
+      'Adobe Experience Manager (AEM)',
+    ],
+  ),
+  Skill(
+    name: 'AI-Assisted Development',
+    technologies: [
       'Agentic AI Coding',
       'Claude Code',
       'GitHub Copilot',
       'OpenCode',
       'Local LLMs',
-      'Firebase Firestore',
-      'Firebase Cloud Functions',
-      'Firebase Remote Config',
-      'Firebase App Check',
-      'Firebase Crashlytics',
-      'Firebase Performance Monitoring',
     ],
   ),
   Skill(
-    name: 'Web Frameworks',
-    level: 'Advanced',
-    icon: Icons.language,
+    name: 'Tools & Collaboration',
     technologies: [
-      'Jaspr (Dart web framework)',
-    ],
-  ),
-  Skill(
-    name: 'Web Technologies',
-    level: 'Intermediate',
-    icon: Icons.web,
-    technologies: [
-      'Java',
-      'jQuery',
-      'HTML',
-      'Spring Boot',
-    ],
-  ),
-  Skill(
-    name: 'Monitoring, CMS & CI/CD',
-    level: 'Intermediate',
-    icon: Icons.analytics,
-    technologies: [
-      'Adobe Experience Manager (AEM)',
-      'Dynatrace',
-      'Codemagic CI/CD',
+      'Git',
+      'VS Code',
+      'Xcode',
+      'Postman',
+      'Jira',
+      'Confluence',
     ],
   ),
 ];
@@ -330,6 +328,7 @@ final List<Project> staticProjects = [
     ],
     url: 'https://zachmattopo.github.io/movement_to_work',
     imagePath: 'assets/images/mtw_logo.png',
+    darkImagePath: 'assets/images/mtw_logo_dark.png',
   ),
 ];
 
@@ -396,23 +395,20 @@ const String contactCardTitle = 'Let\'s Connect';
 const String contactSummary =
     'I\'m always interested in new opportunities and collaborations. Feel free to reach out!';
 
-final List<Map<String, dynamic>> contactButtons = [
+const List<Map<String, String>> contactButtons = [
   {
     'label': 'Email',
     'subtitle': 'hafiz.nordin@icloud.com',
-    'icon': Icons.email,
     'url': 'mailto:hafiz.nordin@icloud.com',
   },
   {
     'label': 'LinkedIn',
-    'subtitle': 'Connect with me',
-    'icon': PhosphorIcons.linkedinLogo(PhosphorIconsStyle.fill),
+    'subtitle': 'linkedin.com/in/hafiznordin',
     'url': 'https://www.linkedin.com/in/hafiznordin/',
   },
   {
     'label': 'Book a call',
-    'subtitle': 'Schedule via Calendly',
-    'icon': PhosphorIcons.calendarBlank(PhosphorIconsStyle.fill),
+    'subtitle': 'calendly.com/hafiz-nordin',
     'url': 'https://calendly.com/hafiz-nordin',
   },
 ];
@@ -421,4 +417,137 @@ const List<Map<String, String>> contactInfoItems = [
   {'label': 'Availability', 'value': 'Immediate'},
   {'label': 'Location', 'value': 'UK'},
   {'label': 'Visa sponsorship', 'value': 'Not needed'},
+];
+
+// Section copy for the globe page.
+const String projectsTitle = 'Projects';
+const String projectsSubtitle = 'Two shipped side projects, both written in Dart.';
+const String stackTitle = 'Stack';
+const String stackSubtitle = 'What I reach for, grouped by what it’s for.';
+const String plainCvTitle = 'Plain CV';
+const String plainCvSubtitle = 'Everything above, without the globe.';
+const String contactTitle = 'Let’s talk.';
+const String contactSubtitle = 'Available now in the UK, no visa sponsorship needed.';
+
+/// The career globe, most recent stop first.
+final List<JourneyStop> journeyStops = [
+  JourneyStop(
+    id: 'aberdeen',
+    city: 'Aberdeen',
+    region: 'Scotland, UK',
+    code: 'ABZ',
+    lat: 57.1497,
+    lon: -2.0943,
+    zone: StopZone.uk,
+    year: '2026',
+    subhead: 'Independent software developer, Jan 2026 → now.',
+    summary:
+        'Shipping independent work since January 2026: **WhereToFuel**, a real-time UK fuel-price finder in Flutter and Firebase, and the **Movement to Work campaign site** for Jobcentre Plus Aberdeen in Dart and Jaspr. Alongside both, structured practice in **agentic AI engineering** with Claude, Copilot, OpenCode and local LLMs, every output reviewed by hand.',
+    facts: const {
+      'status': 'available immediately',
+      'uk_visa_sponsorship': 'not needed',
+      'shipped': ['WhereToFuel', 'Movement to Work site'],
+      'stack': ['Flutter', 'Firebase', 'TypeScript', 'Jaspr'],
+    },
+    roles: [staticExperiences[0]],
+  ),
+  JourneyStop(
+    id: 'birmingham',
+    city: 'Birmingham',
+    region: 'England, UK',
+    code: 'BHX',
+    lat: 52.4862,
+    lon: -1.8904,
+    zone: StopZone.uk,
+    year: '2022',
+    subhead: 'Senior Software Engineer at BT Group, Aug 2022 → Mar 2025.',
+    summary:
+        'Shipped Flutter features to the **EE app’s 10M+ active users** with product, QA and design, most notably the **Data Gifting Uplift**, and lifted customer satisfaction **15%**. Held a **99.7% crash-free rate** through code review and tested, cleanly separated code, and **cut code-related incidents 25%** by mentoring junior developers.',
+    facts: const {
+      'csat': '+15%',
+      'crash_free_rate': '99.7%',
+      'incidents': '-25%',
+      'stack': ['Flutter', 'Dart', 'BLoC', 'Scrum'],
+    },
+    roles: [staticExperiences[1]],
+  ),
+  JourneyStop(
+    id: 'kuala-lumpur',
+    city: 'Kuala Lumpur',
+    region: 'Malaysia',
+    code: 'KUL',
+    lat: 3.139,
+    lon: 101.6869,
+    zone: StopZone.malaysia,
+    year: '2018',
+    subhead: 'Four roles, Jan 2018 → Aug 2022, from Swift to Flutter.',
+    summary:
+        'At GoGet, built Malaysia’s **first embedded retirement-savings (EPF) feature for gig workers** and lifted app ratings from **3.7 to 4.6 on Google Play and 2.4 to 4.3 on the App Store**. Before that: the Ministry of Health’s MyJanjiTemu app at MIMOS, an oil and gas work portal at Arise, and the DotDotPlus iOS messenger at Trigger Next.',
+    facts: const {
+      'play_store_rating': '3.7 → 4.6',
+      'app_store_rating': '2.4 → 4.3',
+      'crash_free_rate': '>95%',
+      'roles': 4,
+    },
+    roles: [staticExperiences[2], staticExperiences[3], staticExperiences[4], staticExperiences[5]],
+  ),
+  JourneyStop(
+    id: 'penang',
+    city: 'Penang',
+    region: 'Malaysia',
+    code: 'PEN',
+    lat: 5.2946,
+    lon: 100.2627,
+    zone: StopZone.malaysia,
+    year: '2015',
+    subhead: 'Package Failure Analysis Engineer at Intel, Aug 2015 → Jul 2017.',
+    summary:
+        'Before software, hardware. Traced unit damage across every factory module to the pick-and-place process, **saving RM10 million a quarter** in yield loss. Led root-cause investigations for factory excursions across Intel’s global sites with **FESEM, FIB, CSAM, IRLC and X-ray**, wrote Best Known Methods, and trained technicians to run excursions on their own.',
+    facts: const {
+      'saved_per_quarter': 'RM10M',
+      'tools': ['FESEM', 'FIB', 'CSAM', 'X-ray'],
+      'worked_with': ['Malaysia', 'USA', 'Japan'],
+    },
+    roles: [staticExperiences[6]],
+  ),
+  JourneyStop(
+    id: 'nashville',
+    city: 'Nashville',
+    region: 'Tennessee, USA',
+    code: 'BNA',
+    lat: 36.1447,
+    lon: -86.8027,
+    zone: StopZone.usCentral,
+    year: '2011',
+    subhead: 'B.E. Mechanical Engineering, Vanderbilt University, 2011 → 2015.',
+    summary:
+        'Arrived on a **full Malaysian government scholarship** and left with a mechanical engineering degree (**engineering CGPA 3.51**). First code here: Java, and Arduino C++ for mechatronics. Also worked the university’s Tech Hub help desk, fixing accounts, software and hardware at **86% customer satisfaction**.',
+    facts: const {
+      'degree': 'B.E. Mechanical',
+      'eng_cgpa': 3.51,
+      'tech_hub_csat': '86%',
+      'first_code': ['Java', 'Arduino C++'],
+    },
+    roles: [staticExperiences[7]],
+    schooling: [educations[0]],
+  ),
+  JourneyStop(
+    id: 'kelantan',
+    city: 'Kelantan',
+    region: 'Malaysia',
+    code: 'KBR',
+    lat: 6.1636,
+    lon: 102.2829,
+    zone: StopZone.malaysia,
+    year: '2009',
+    subhead: 'Science stream, MARA Junior Science College (MRSM) Pengkalan Chepa, 2009 → 2010.',
+    summary:
+        'Where it started. Graduated with **straight 9A+ in SPM** (the GCSE equivalent), won MARA’s **Outstanding Student Achievement Award** in 2011, and earned the government scholarship that took me to Vanderbilt.',
+    facts: const {
+      'spm': '9A+',
+      'cgpa': '3.88 / 4.00',
+      'award': 'MARA Outstanding Student Achievement, 2011',
+    },
+    schooling: [educations[1]],
+  ),
 ];

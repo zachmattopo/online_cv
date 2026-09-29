@@ -1,112 +1,72 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../presentation/cubit/resume_cubit.dart';
 
+import '../globe/globe_math.dart';
+import '../presentation/cubit/resume_cubit.dart';
+import '../theme/hn_theme.dart';
+import 'hn_widgets.dart';
+import 'pixel_icon.dart';
+import 'pixel_text.dart';
+
+/// The close: three ways to reach out, set large, with the local time.
 class ContactSection extends StatelessWidget {
-  const ContactSection({super.key});
+  final ValueListenable<DateTime> clock;
+
+  const ContactSection({super.key, required this.clock});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final isDesktop = screenWidth > 600;
+    final p = HnPalette.of(context);
+    final width = MediaQuery.sizeOf(context).width;
+    final desktop = width >= HnLayout.desktopBreakpoint;
+    final gutter = HnLayout.gutter(width);
 
     return BlocBuilder<ResumeCubit, ResumeState>(
       builder: (context, state) {
+        final socials = state.socialLinks.where((s) => s.label != 'LinkedIn').toList();
         return Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.05,
-            vertical: 80,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                theme.colorScheme.surface,
-                theme.colorScheme.primary.withValues(alpha: 0.1),
+          color: p.paper,
+          padding: EdgeInsets.fromLTRB(gutter, desktop ? 96 : 80, gutter, desktop ? 80 : 56),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1080),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const DitherRule(),
+                const SizedBox(height: 28),
+                PixelText(state.contactTitle, size: desktop ? 120 : 72, scale: desktop ? 4 : 3, header: true, fitOneLine: true),
+                const SizedBox(height: 14),
+                PixelText(state.contactSubtitle, size: desktop ? 32 : 28, scale: 2, color: p.mute),
+                const SizedBox(height: 40),
+                for (final b in state.contactButtons)
+                  _ContactRow(
+                    label: b['label'] ?? '',
+                    value: b['subtitle'] ?? '',
+                    url: b['url'] ?? '',
+                    desktop: desktop,
+                  ),
+                Container(height: 1, color: p.hair),
+                const SizedBox(height: 24),
+                Wrap(
+                  spacing: 24,
+                  runSpacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    for (final s in socials) HnTextLink(s.label, url: s.url, size: 13),
+                    ValueListenableBuilder<DateTime>(
+                      valueListenable: clock,
+                      builder: (context, now, _) {
+                        final t = localTime(state.homeZone, now.toUtc());
+                        return Text(
+                          'It’s ${hhmm(t.time)} ${t.zone} in ${state.homeCity}.',
+                          style: HnType.body(p.mute, size: 13).copyWith(height: 1.4),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state.contactSectionTitle,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Card(
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        children: [
-                          Text(
-                            state.contactCardTitle,
-                            style: theme.textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            state.contactSummary,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              height: 1.6,
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 32),
-                          Wrap(
-                            spacing: 16,
-                            runSpacing: 16,
-                            alignment: WrapAlignment.center,
-                            children: state.contactButtons.map((btn) {
-                              return ContactButton(
-                                label: btn['label'] as String,
-                                subtitle: btn['subtitle'] as String,
-                                icon: btn['icon'] as IconData,
-                                url: btn['url'] as String,
-                              );
-                            }).toList(),
-                          ),
-                          const SizedBox(height: 32),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Wrap(
-                              alignment:
-                                  isDesktop ? WrapAlignment.spaceEvenly : WrapAlignment.center,
-                              spacing: 24,
-                              runSpacing: 16,
-                              children: [
-                                ...state.contactInfoItems.map((item) => InfoChip(
-                                      label: item['label'] as String,
-                                      value: item['value'] as String,
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         );
@@ -115,132 +75,45 @@ class ContactSection extends StatelessWidget {
   }
 }
 
-class ContactButton extends StatefulWidget {
-  final String label;
-  final String subtitle;
-  final IconData icon;
-  final String url;
-
-  const ContactButton({
-    super.key,
-    required this.label,
-    required this.subtitle,
-    required this.icon,
-    required this.url,
-  });
-
-  @override
-  State<ContactButton> createState() => _ContactButtonState();
-}
-
-class _ContactButtonState extends State<ContactButton> {
-  bool _isHovered = false;
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return AnimatedContainer(
-      duration: 200.ms,
-      curve: Curves.easeOutCubic,
-      decoration: BoxDecoration(
-        color: _isHovered ? theme.colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: _isHovered ? theme.colorScheme.primary : theme.colorScheme.primaryContainer,
-          width: _isHovered ? 2 : 1,
-        ),
-        boxShadow: _isHovered
-            ? [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                  blurRadius: 12,
-                  spreadRadius: 2,
-                ),
-              ]
-            : null,
-      ),
-      child: ElevatedButton(
-        onPressed: () => _launchUrl(widget.url),
-        onHover: (hovered) {
-          setState(() {
-            _isHovered = hovered;
-          });
-        },
-        onFocusChange: (focused) {
-          setState(() {
-            _isHovered = focused;
-          });
-        },
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              widget.icon,
-              color: _isHovered ? theme.colorScheme.primary : null,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              widget.label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: _isHovered ? theme.colorScheme.primary : null,
-              ),
-            ),
-            Text(
-              widget.subtitle,
-              style: theme.textTheme.bodySmall,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class InfoChip extends StatelessWidget {
+class _ContactRow extends StatelessWidget {
   final String label;
   final String value;
+  final String url;
+  final bool desktop;
 
-  const InfoChip({
-    super.key,
-    required this.label,
-    required this.value,
-  });
+  const _ContactRow({required this.label, required this.value, required this.url, required this.desktop});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Column(
-      children: [
-        Text(
-          label,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        Text(
+    final p = HnPalette.of(context);
+    return HnExternal(
+      url: url,
+      builder: (context, hover, focus) {
+        final valueText = Text(
           value,
-          style: theme.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w500,
+          style: HnType.body(hover ? p.accent : p.ink, size: desktop ? 22 : 17, weight: FontWeight.w500).copyWith(height: 1.3),
+        );
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 140),
+          padding: EdgeInsets.symmetric(vertical: desktop ? 22 : 16, horizontal: 4),
+          decoration: BoxDecoration(
+            color: hover ? p.wash : null,
+            border: Border(top: BorderSide(color: p.hair)),
           ),
-        ),
-      ],
+          child: desktop
+              ? Row(
+                  children: [
+                    SizedBox(width: 200, child: Caption(label)),
+                    Expanded(child: valueText),
+                    PixelIcon(PixelGlyph.arrowUpRight, color: hover ? p.accent : p.mute, cell: 1.5),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Caption(label), const SizedBox(height: 6), valueText],
+                ),
+        );
+      },
     );
   }
 }

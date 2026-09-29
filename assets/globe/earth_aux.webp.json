@@ -1,0 +1,4 @@
+{
+  "prompt": "Origin: baked, not generated. 1024x512 equirectangular channels: R = luminance of NASA Blue Marble (public domain), G = NASA-derived elevation, B = luminance of NASA Earth at Night (public domain); source images from the three-globe package examples (earth-blue-marble.jpg, earth-topology.png, earth-night.jpg). Baked by .impeccable/mocks/src/textures.html?t=aux; lossless WebP.",
+  "createdAt": "2026-09-29T02:04:01.622Z"
+}

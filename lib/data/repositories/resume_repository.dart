@@ -1,4 +1,8 @@
 import 'package:online_cv/models/education.dart';
+import 'package:online_cv/models/experience.dart';
+import 'package:online_cv/models/journey_stop.dart';
+import 'package:online_cv/models/project.dart';
+import 'package:online_cv/models/skill.dart';
 import 'package:online_cv/models/social_link.dart';
 
 import '../../core/static_data.dart';
@@ -36,7 +40,7 @@ class ResumeRepository {
 
   String getContactSummary() => contactSummary;
 
-  List<Map<String, dynamic>> getContactButtons() => contactButtons;
+  List<Map<String, String>> getContactButtons() => contactButtons;
 
   List<Map<String, String>> getContactInfoItems() => contactInfoItems;
 
@@ -50,11 +54,37 @@ class ResumeRepository {
 
   List<Map<String, String>> getCertifications() => certifications;
 
-  List getExperiences() => staticExperiences;
+  List<Experience> getExperiences() => staticExperiences;
 
-  List getProjects() => staticProjects;
+  List<Project> getProjects() => staticProjects;
 
-  List getSkills() => staticSkills;
+  List<Skill> getSkills() => staticSkills;
+
+  List<JourneyStop> getJourneyStops() => journeyStops;
+
+  String getHeroTagline() => heroTagline;
+
+  String getHeroLede() => heroLede;
+
+  String getHomeCity() => homeCity;
+
+  StopZone getHomeZone() => homeZone;
+
+  String getProjectsTitle() => projectsTitle;
+
+  String getProjectsSubtitle() => projectsSubtitle;
+
+  String getStackTitle() => stackTitle;
+
+  String getStackSubtitle() => stackSubtitle;
+
+  String getPlainCvTitle() => plainCvTitle;
+
+  String getPlainCvSubtitle() => plainCvSubtitle;
+
+  String getContactTitle() => contactTitle;
+
+  String getContactSubtitle() => contactSubtitle;
 
   List<String> getNavLabels() => navLabels;
 
