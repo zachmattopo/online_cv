@@ -11,7 +11,7 @@ class VisitorCounterSection extends StatelessWidget {
   const VisitorCounterSection({super.key});
 
   static const String _badgeUrl =
-      'https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fzachmattopo.github.io%2Fonline-cv-live%2F&countColor=%23263759';
+      'https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fzachmattopo.github.io%2Fonline-cv-live%2F&labelColor=%236b6b66&countColor=%2355687c&style=flat&labelStyle=upper';
 
   static const String _statsUrl =
       'https://visitorbadge.io/status?path=https%3A%2F%2Fzachmattopo.github.io%2Fonline-cv-live%2F';
