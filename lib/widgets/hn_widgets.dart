@@ -106,7 +106,11 @@ class _PressableState extends State<Pressable> {
               border: _focus ? Border.all(color: p.accent, width: 2) : null,
               borderRadius: BorderRadius.circular(5),
             ),
-            child: widget.builder(context, _hover, _focus),
+            // Labels inside a control aren't selectable text: without this,
+            // the page's SelectionArea shows an I-beam over the label.
+            child: SelectionContainer.disabled(
+              child: widget.builder(context, _hover, _focus),
+            ),
           ),
         ),
       ),
