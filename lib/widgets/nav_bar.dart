@@ -54,7 +54,13 @@ class NavBar extends StatelessWidget {
                   children: [
                     const PixelAvatar(size: 32),
                     const SizedBox(width: 12),
-                    PixelText(state.name, size: 28, scale: 2),
+                    // The raster keeps room below the baseline for descenders
+                    // this name doesn't have; nudge it so the ink centres on
+                    // the avatar (measured: 5px high).
+                    Transform.translate(
+                      offset: const Offset(0, 5),
+                      child: PixelText(state.name, size: 28, scale: 2),
+                    ),
                   ],
                 ),
               ),
