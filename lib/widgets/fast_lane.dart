@@ -14,12 +14,16 @@ class FastLane extends StatefulWidget {
   final ValueChanged<int> onJump;
   final VoidCallback onPlainCv;
 
+  /// Easter egg: fired when someone tries `sudo` in the search.
+  final VoidCallback onSudo;
+
   const FastLane({
     super.key,
     required this.stops,
     required this.active,
     required this.onJump,
     required this.onPlainCv,
+    required this.onSudo,
   });
 
   @override
@@ -81,7 +85,26 @@ class _FastLaneState extends State<FastLane> {
     ];
   }
 
+  /// `sudo` or `sudo anything`: permission denied, the classic way.
+  bool get _isSudo {
+    final q = _query.text.trim().toLowerCase();
+    return q == 'sudo' || q.startsWith('sudo ');
+  }
+
+  bool _wasSudo = false;
+
+  void _changed(String _) {
+    // Shake once on entering the command, not on every keystroke after it.
+    if (_isSudo && !_wasSudo) widget.onSudo();
+    _wasSudo = _isSudo;
+    setState(() {});
+  }
+
   void _submit(String _) {
+    if (_isSudo) {
+      widget.onSudo();
+      return;
+    }
     final m = _matches;
     if (m.isNotEmpty) widget.onJump(m.first);
   }
@@ -160,7 +183,7 @@ class _FastLaneState extends State<FastLane> {
               width: (width * 0.16 - 40).clamp(160.0, 260.0),
               child: TextField(
                 controller: _query,
-                onChanged: (_) => setState(() {}),
+                onChanged: _changed,
                 onSubmitted: _submit,
                 cursorColor: p.accent,
                 style: HnType.body(p.ink, size: 13.5).copyWith(height: 1.3),
@@ -174,7 +197,14 @@ class _FastLaneState extends State<FastLane> {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: query.isNotEmpty && matches.isEmpty
+              child: _isSudo
+                  ? Text(
+                      'hafiz is not in the sudoers file. This incident will be reported.',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: HnType.body(p.ink, size: 12.5, weight: FontWeight.w500).copyWith(height: 1.3),
+                    )
+                  : query.isNotEmpty && matches.isEmpty
                   ? Text('No stop matches “$query”. Try a company or a year.',
                       style: HnType.body(p.mute, size: 12.5).copyWith(height: 1.3))
                   : chips,

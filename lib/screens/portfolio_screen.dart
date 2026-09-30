@@ -39,7 +39,7 @@ class PortfolioScreen extends StatefulWidget {
   State<PortfolioScreen> createState() => _PortfolioScreenState();
 }
 
-class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProviderStateMixin {
+class _PortfolioScreenState extends State<PortfolioScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final ListController _listController = ListController();
   final _PrecalculateAll _precalc = _PrecalculateAll();
@@ -213,6 +213,24 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
     );
   }
 
+  // Easter egg: `sudo` in the fast lane gets a "permission denied" head-shake.
+  late final AnimationController _shake = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 520),
+  );
+
+  void _shakeGlobe() {
+    if (_reduceMotion) return;
+    _shake.forward(from: 0);
+  }
+
+  /// Horizontal offset of the shaking globe: a quick, decaying back-and-forth.
+  double get _shakeOffset {
+    final t = _shake.value;
+    if (t == 0 || t == 1) return 0;
+    return math.sin(t * math.pi * 8) * 14 * (1 - t);
+  }
+
   void _scrollToStop(int i) => _scrollToItem(_firstStopItem + i);
 
   void _onNavigate(int navIndex) {
@@ -235,6 +253,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
   void dispose() {
     _clockTimer?.cancel();
     _spin.dispose();
+    _shake.dispose();
     _scrollController.dispose();
     _listController.dispose();
     _frame.dispose();
@@ -260,7 +279,11 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
       builder: (context, state) {
         _stops = state.journeyStops;
         final band = desktop ? 0.0 : JourneyTimeline.bandHeight(size);
-        final globe = GlobeView(frame: _frame, clock: _clock, stops: state.journeyStops);
+        final globe = AnimatedBuilder(
+          animation: _shake,
+          builder: (context, child) => Transform.translate(offset: Offset(_shakeOffset, 0), child: child),
+          child: GlobeView(frame: _frame, clock: _clock, stops: state.journeyStops),
+        );
 
         final list = SuperSliverList(
           listController: _listController,
@@ -368,6 +391,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
                     active: _activeStop,
                     onJump: _scrollToStop,
                     onPlainCv: () => _scrollToItem(_plainCvItem),
+                    onSudo: _shakeGlobe,
                   ),
                 ),
               ],
