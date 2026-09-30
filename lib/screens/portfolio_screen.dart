@@ -74,7 +74,10 @@ class _PortfolioScreenState extends State<PortfolioScreen> with TickerProviderSt
   bool _dragging = false;
   double _spinVelocity = 0; // extra °/s from a flick, decays back to idle
 
-  static const double _idleSpin = 3.2; // °/s
+  // Earth turns west to east (anticlockwise seen from above the North
+  // Pole), so the face we see drifts left to right and the longitude at
+  // the centre of view falls over time.
+  static const double _idleSpin = -3.2; // °/s
 
   void _onGrab() {
     _dragging = true;

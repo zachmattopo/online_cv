@@ -278,7 +278,7 @@ An 8px band of 2px ink cells thresholded against a 4×4 Bayer matrix, dense (62%
 
 ### Motion grammar
 - **Camera** (`JourneyTimeline.frameAt`): scroll-driven only. The camera holds on a stop while its section is read and flies to the next along the great circle with ease-in-out cubic, pulling back to the whole disc after the last stop.
-- **Idle spin:** 3.2°/s, hero only, stopped once the reader scrolls past 30% of the viewport.
+- **Idle spin:** 3.2°/s west to east (the real direction: anticlockwise from above the North Pole), hero only, stopped once the reader scrolls past 30% of the viewport.
 - **Programmatic jumps** (nav, chips): ease-in-out cubic, 450 to 1800ms scaled by distance.
 - **Response reveal:** on first landing, the JSON types in line by line over `180 + 110 × (lines)` ms, once.
 - **State changes:** 140 to 160ms ease-out on hover and active fills.
