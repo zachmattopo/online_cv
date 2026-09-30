@@ -26,6 +26,10 @@ class GlobeGrip extends StatefulWidget {
   /// Forwards mouse-wheel and trackpad scrolls to the page underneath.
   final ValueChanged<PointerScrollEvent> onScroll;
 
+  /// The page's scroll: on narrow layouts, vertical swipes that start on
+  /// the globe are handed to it, so the page never feels stuck.
+  final ScrollController scrollController;
+
   const GlobeGrip({
     super.key,
     required this.frame,
@@ -35,6 +39,7 @@ class GlobeGrip extends StatefulWidget {
     required this.onDrag,
     required this.onEnd,
     required this.onScroll,
+    required this.scrollController,
   });
 
   @override
@@ -43,6 +48,19 @@ class GlobeGrip extends StatefulWidget {
 
 class _GlobeGripState extends State<GlobeGrip> {
   bool _dragging = false;
+  Drag? _pageDrag;
+
+  void _pageDragStart(DragStartDetails d) {
+    if (!widget.scrollController.hasClients) return;
+    // A mouse drag on the globe is a spin gesture, never a page scroll (the
+    // wheel still scrolls). Only touch and stylus swipes hand off here.
+    if (d.kind == PointerDeviceKind.mouse) return;
+    _pageDrag = widget.scrollController.position.drag(d, () {
+      _pageDrag = null;
+      // The swipe may have scrolled past the hero; drop the grip now if so.
+      if (mounted) setState(() {});
+    });
+  }
 
   static const double _deg = 57.29577951308232;
 
@@ -57,7 +75,9 @@ class _GlobeGripState extends State<GlobeGrip> {
     return ValueListenableBuilder<bool>(
       valueListenable: widget.enabled,
       builder: (context, enabled, _) {
-        if (!enabled) return const SizedBox.shrink();
+        // Stay mounted until an in-progress page swipe finishes, or the
+        // swipe would be cut off as the page leaves the hero.
+        if (!enabled && _pageDrag == null) return const SizedBox.shrink();
         return ValueListenableBuilder<GlobeFrame>(
           valueListenable: widget.frame,
           builder: (context, f, _) {
@@ -103,6 +123,11 @@ class _GlobeGripState extends State<GlobeGrip> {
                                   onHorizontalDragUpdate: (d) => _update(d.delta, r),
                                   onHorizontalDragEnd: (d) => end(d.velocity.pixelsPerSecond.dx),
                                   onHorizontalDragCancel: () => end(0),
+                                  // Vertical swipes scroll the page, with its usual momentum.
+                                  onVerticalDragStart: _pageDragStart,
+                                  onVerticalDragUpdate: (d) => _pageDrag?.update(d),
+                                  onVerticalDragEnd: (d) => _pageDrag?.end(d),
+                                  onVerticalDragCancel: () => _pageDrag?.cancel(),
                                 ),
                         ),
                       ),

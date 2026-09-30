@@ -323,7 +323,11 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
                             alignment: Alignment.topCenter,
                             minHeight: size.height,
                             maxHeight: size.height,
-                            child: ColoredBox(color: palette.paper, child: child),
+                            // The band only draws the globe; touches pass through
+                            // to the page underneath so a swipe anywhere scrolls.
+                            child: IgnorePointer(
+                              child: ColoredBox(color: palette.paper, child: child),
+                            ),
                           ),
                         ),
                       ),
@@ -339,6 +343,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
                     onDrag: _onGripDrag,
                     onEnd: _onRelease,
                     onScroll: _onGripScroll,
+                    scrollController: _scrollController,
                   ),
                 ),
                 Positioned(
