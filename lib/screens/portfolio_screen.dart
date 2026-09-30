@@ -99,8 +99,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> with TickerProviderSt
     duration: const Duration(milliseconds: 2800),
   )..addListener(_onDizzyTick);
 
-  // A deliberate shake: 8 direction changes in 1.2s, each swing >= 15°.
-  static const int _shakeReversals = 8;
+  // A deliberate shake: 10 direction changes in 1.2s, each swing >= 15°.
+  static const int _shakeReversals = 10;
   static const Duration _shakeWindow = Duration(milliseconds: 1200);
   static const double _shakeSwingDeg = 15;
 
