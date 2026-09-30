@@ -15,7 +15,6 @@ class Experience {
   final String date;
   final List<String> highlights;
   final List<UrlLink> urls;
-  final String? logoPath;
 
   const Experience({
     required this.company,
@@ -24,7 +23,6 @@ class Experience {
     required this.date,
     required this.highlights,
     this.urls = const [],
-    this.logoPath,
   });
 }
 

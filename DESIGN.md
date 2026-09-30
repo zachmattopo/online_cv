@@ -244,7 +244,7 @@ Mono 12.5px with a 1px underline at 40% ink; on hover text and underline go slat
 - **State:** active is slate fill and border with on-slate text (year at 75%); hover is wash; chips that do not match the search dim to 35% opacity (160ms). Fill and text change together, instantly. The active chip scrolls itself into view (260ms ease-out cubic), and the row fades its edges only while chips are clipped past them.
 
 ### Cards / Containers
-- **Project card:** paper, 1px hair, 6px corners, 22×24px padding, 40px logo tile on white with 6px corners, meta rows as caption + text separated by hair rules.
+- **Project card:** paper, 1px hair, 6px corners, 22×24px padding, 40px-tall project logo (32px on narrow screens) with 6px corners on the page's own paper, plus a dark-background variant where the artwork needs one, meta rows as caption + text separated by hair rules.
 - **ResponseBlock:** `code` fill, 6px corners, 18px side padding. Header row is `GET /stops/<id>` and a status (`LiveDot` + "200 OK · 03:23 BST"; a grey dot and "pending…" before it finishes). Body is pretty-printed JSON. Unarrived lines are drawn transparent so the page never reflows.
 - **Shadow strategy:** none (see Elevation).
 

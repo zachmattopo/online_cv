@@ -90,7 +90,6 @@ final List<Experience> staticExperiences = [
     position: 'Senior Software Engineer',
     location: 'Birmingham, England, UK',
     date: 'Aug 2022 - Mar 2025',
-    logoPath: 'assets/images/logo_bt.png',
     highlights: [
       'Boosted CSAT score by 15% via collaboration with cross-functional teams (product management, QA, UX/UI design) to deliver high-quality features and projects in the EE app which serves over 10 million active users; most notably, the Data Gifting Uplift project.',
       'Maintained a crash-free rate within 99.7% by conducting thorough code reviews and ensuring performant Dart/Flutter code with clear separation of UI and business logic, supported by proper unit tests.',
@@ -114,7 +113,6 @@ final List<Experience> staticExperiences = [
     position: 'Senior Mobile Developer',
     location: 'Kuala Lumpur, Malaysia',
     date: 'Oct 2020 - Aug 2022',
-    logoPath: 'assets/images/logo_goget.png',
     highlights: [
       'Developed and maintained the GoGetter app using Dart and Flutter, enhancing worker interactions with job postings on GoGet\'s part-time work platform.',
       'Pioneered the Employees Provident Fund (EPF) third-party API integration into the GoGetter app, enabling Malaysia\'s first embedded retirement savings feature for gig workers.',
@@ -143,7 +141,6 @@ final List<Experience> staticExperiences = [
     position: 'Professional Consultant',
     location: 'Kuala Lumpur, Malaysia',
     date: 'July 2020 - Sep 2020',
-    logoPath: 'assets/images/logo_mimos.png',
     highlights: [
       'Studied the mobile appointment system\'s SRS and SDD to understand requirements for MyJanjiTemu KKM, a greenfield Flutter appointment-booking app built for the Malaysian Ministry of Health (KKM), later absorbed into the MySejahtera app.',
       'Implemented core screens per wireframe design and system requirements, including the app landing page, profile & reminder notification page, appointment listing page, hamburger expanded menu, \'ID tempahan\' widget, and \'Batal/Sahkan kehadiran\' widget.',
@@ -160,7 +157,6 @@ final List<Experience> staticExperiences = [
     position: 'Mobile Application Developer',
     location: 'Kuala Lumpur, Malaysia',
     date: 'July 2019 - July 2020',
-    logoPath: 'assets/images/logo_arise.png',
     highlights: [
       'Developed a mobile work portal app for an established oil and gas company in Malaysia, for the iOS and Android platforms with Dart and Flutter framework.',
       'Developed the frontend of the web work portal using Java, jQuery, HTML, Thymeleaf, and Spring Boot.',
@@ -174,7 +170,6 @@ final List<Experience> staticExperiences = [
     position: 'Mobile Application Developer',
     location: 'Kuala Lumpur, Malaysia',
     date: 'January 2018 - June 2019',
-    logoPath: 'assets/images/logo_triggernext.png',
     highlights: [
       'Built and maintained DotDotPlus, an iOS social messaging chat app, using Swift (99%) and Objective-C (1%) using MVC architecture in Xcode.',
       'Integrated Socket.IO to enable real-time messaging between mobile clients and server, and connected 3rd-party services and device sensors to power user notifications.',
@@ -197,7 +192,6 @@ final List<Experience> staticExperiences = [
     position: 'Package Failure Analysis Engineer',
     location: 'Penang, Malaysia',
     date: 'August 2015 - July 2017',
-    logoPath: 'assets/images/logo_intel.png',
     highlights: [
       'Led root cause investigations for factory excursion issues across Intel\'s global manufacturing sites, saving the company millions of dollars in potential yield loss.',
       'Identified the pick-and-place process as the root cause of unit damage across all factory modules, saving RM10 million per quarter in assembled units previously subject to yield loss.',
@@ -216,7 +210,6 @@ final List<Experience> staticExperiences = [
     position: 'Tech Hub Undergraduate Student Worker',
     location: 'Nashville, Tennessee, USA',
     date: 'April 2014 - May 2015',
-    logoPath: 'assets/images/logo_vanderbilt.png',
     highlights: [
       'Delivered IT customer service to students, staff, and affiliates of the university with 86% CSAT.',
       'Daily routine involved communication with clients to troubleshoot IT problems regarding student and staff\'s university accounts, software applications and general Mac/Windows hardware issues.',
