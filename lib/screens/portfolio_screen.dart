@@ -196,9 +196,10 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
     }
   }
 
+  /// Every jump (nav, hero buttons, fast lane) takes a fixed 300ms with a
+  /// fast start, so the page responds the instant it's asked to.
   void _scrollToItem(int index) {
     if (!_listController.isAttached) return;
-    final from = _scrollController.offset;
     if (_reduceMotion) {
       _listController.jumpToItem(index: index, scrollController: _scrollController, alignment: 0);
       return;
@@ -207,8 +208,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> with SingleTickerProv
       index: index,
       scrollController: _scrollController,
       alignment: 0,
-      duration: (target) => Duration(milliseconds: (450 + (target - from).abs() * 0.18).clamp(450, 1800).round()),
-      curve: (_) => Curves.easeInOutCubic,
+      duration: (_) => const Duration(milliseconds: 300),
+      curve: (_) => Curves.easeOutCubic,
     );
   }
 
