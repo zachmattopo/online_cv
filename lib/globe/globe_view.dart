@@ -49,11 +49,15 @@ class GlobeView extends StatefulWidget {
   final ValueListenable<DateTime> clock;
   final List<JourneyStop> stops;
 
+  /// Easter egg: 0–1 visibility of the "oi, pening la!" bubble at Aberdeen.
+  final ValueListenable<double>? dizzy;
+
   const GlobeView({
     super.key,
     required this.frame,
     required this.clock,
     required this.stops,
+    this.dizzy,
   });
 
   @override
@@ -86,7 +90,7 @@ class _GlobeViewState extends State<GlobeView> {
   Widget build(BuildContext context) {
     final palette = HnPalette.of(context);
     final dpr = MediaQuery.devicePixelRatioOf(context);
-    final repaint = Listenable.merge([widget.frame, widget.clock]);
+    final repaint = Listenable.merge([widget.frame, widget.clock, if (widget.dizzy != null) widget.dizzy]);
     final assets = _assets, shader = _shader;
     if (assets == null || shader == null) return const SizedBox.expand();
     // Markers and routes appear with the planet, never over an empty page;
@@ -114,6 +118,7 @@ class _GlobeViewState extends State<GlobeView> {
               clock: widget.clock,
               stops: widget.stops,
               palette: palette,
+              dizzy: widget.dizzy,
               repaint: repaint,
             ),
             child: const SizedBox.expand(),
@@ -192,12 +197,14 @@ class _MarksPainter extends CustomPainter {
   final ValueListenable<DateTime> clock;
   final List<JourneyStop> stops;
   final HnPalette palette;
+  final ValueListenable<double>? dizzy;
 
   _MarksPainter({
     required this.frame,
     required this.clock,
     required this.stops,
     required this.palette,
+    this.dizzy,
     required Listenable repaint,
   }) : super(repaint: repaint);
 
@@ -323,6 +330,7 @@ class _MarksPainter extends CustomPainter {
         stopMark(p);
       }
       _terminatorLabel(canvas, size, f, now);
+      _dizzyBubble(canvas, size, f);
       return;
     }
 
@@ -461,6 +469,45 @@ class _MarksPainter extends CustomPainter {
     if (activeText != null && activeBox != null) _draw(canvas, activeBox, activeText, palette.ink);
   }
 
+  /// Easter egg: shake the hero globe and Hafiz, at home in Aberdeen,
+  /// complains that he's dizzy. A plate with a leader line to the city,
+  /// or to the globe's edge when Aberdeen is round the back.
+  void _dizzyBubble(Canvas canvas, Size size, GlobeFrame f) {
+    final t = dizzy?.value ?? 0;
+    if (t <= 0) return;
+    final home = stops.where((s) => s.id == 'aberdeen').firstOrNull ?? stops.firstOrNull;
+    if (home == null) return;
+    // Anchor on Aberdeen; when it's on the far side, peek out from behind
+    // the limb in its direction instead.
+    final (vx, vy, vz) = f.camera.toView(home.lon, home.lat);
+    final c = f.camera.center, rad = f.camera.radius;
+    final flat = math.sqrt(vx * vx + vy * vy);
+    final p = vz >= 0 || flat < 1e-6
+        ? Offset(c.dx + rad * vx, c.dy - rad * vy)
+        : Offset(c.dx + rad * vx / flat, c.dy - rad * vy / flat);
+    final ink = palette.ink.withValues(alpha: t);
+    final tp = _text('oi, pening la!', ink);
+    // Plate sits down-left of the city like a callout; a small bob on entry.
+    final lift = (1 - t) * 8;
+    final r = _place(size, tp, p + Offset(-tp.width - 60, 34 + lift));
+    final lead = Paint()
+      ..color = ink
+      ..strokeWidth = 1.5;
+    final corner = Offset(r.right, r.top + r.height / 2);
+    canvas.drawLine(corner, p, Paint()
+      ..color = palette.paper.withValues(alpha: t)
+      ..strokeWidth = 4);
+    canvas.drawLine(corner, p, lead);
+    canvas.drawCircle(p, 5, Paint()..color = palette.paper.withValues(alpha: t));
+    canvas.drawCircle(p, 5, lead..style = PaintingStyle.stroke);
+    canvas.drawRect(r, Paint()..color = palette.paper.withValues(alpha: t));
+    canvas.drawRect(r, Paint()
+      ..color = ink
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5);
+    tp.paint(canvas, r.topLeft + const Offset(8, 4));
+  }
+
   /// Names the live day/night line where it crosses the visible disc.
   void _terminatorLabel(Canvas canvas, Size size, GlobeFrame f, DateTime now) {
     Offset? best;
@@ -477,6 +524,6 @@ class _MarksPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_MarksPainter old) =>
+  bool shouldRepaint(_MarksPainter old) => old.dizzy != dizzy ||
       old.palette != palette || old.stops != stops;
 }

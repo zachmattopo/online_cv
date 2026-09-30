@@ -82,13 +82,59 @@ class _PortfolioScreenState extends State<PortfolioScreen> with TickerProviderSt
   }
 
   void _onGripDrag(double dLon, double dLat) {
+    _detectShake(dLon);
     _heroLon = (_heroLon + dLon + 180) % 360 - 180;
     _heroLat = (_heroLat + dLat).clamp(-60.0, 75.0);
     _update();
   }
 
+  // Easter egg: shake the globe hard, back and forth, and Hafiz (at home in
+  // Aberdeen) says "oi, pening la!" (Malay for "hey, I'm dizzy!").
+  final ValueNotifier<double> _dizzy = ValueNotifier(0);
+  final List<DateTime> _reversals = [];
+  int _dragSign = 0;
+  double _dragRun = 0;
+  late final AnimationController _dizzyAnim = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 2800),
+  )..addListener(_onDizzyTick);
+
+  // A deliberate shake: 8 direction changes in 1.2s, each swing >= 15°.
+  static const int _shakeReversals = 8;
+  static const Duration _shakeWindow = Duration(milliseconds: 1200);
+  static const double _shakeSwingDeg = 15;
+
+  void _detectShake(double dLon) {
+    final sign = dLon.sign.toInt();
+    if (sign == 0) return;
+    if (sign == _dragSign) {
+      _dragRun += dLon.abs();
+      return;
+    }
+    // A direction change only counts after a real swing, not jitter.
+    final now = DateTime.now();
+    if (_dragSign != 0 && _dragRun >= _shakeSwingDeg) _reversals.add(now);
+    _dragSign = sign;
+    _dragRun = dLon.abs();
+    _reversals.removeWhere((t) => now.difference(t) > _shakeWindow);
+    if (_reversals.length >= _shakeReversals && !_dizzyAnim.isAnimating) {
+      _reversals.clear();
+      _getDizzy();
+    }
+  }
+
+  void _getDizzy() => _dizzyAnim.forward(from: 0);
+
+  void _onDizzyTick() {
+    final t = _dizzyAnim.value;
+    // Quick fade in, hold, fade out; the globe itself is left alone.
+    _dizzy.value = _dizzyAnim.isCompleted ? 0 : (t < 0.08 ? t / 0.08 : (t > 0.85 ? (1 - t) / 0.15 : 1));
+  }
+
   void _onRelease(double lonPerSecond) {
     _dragging = false;
+    _dragSign = 0;
+    _dragRun = 0;
     // Keep the flick's momentum (minus the idle spin it resumes into).
     _spinVelocity = _reduceMotion ? 0 : (lonPerSecond - _idleSpin).clamp(-720.0, 720.0);
   }
@@ -254,6 +300,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> with TickerProviderSt
     _clockTimer?.cancel();
     _spin.dispose();
     _shake.dispose();
+    _dizzyAnim.dispose();
+    _dizzy.dispose();
     _scrollController.dispose();
     _listController.dispose();
     _frame.dispose();
@@ -282,7 +330,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> with TickerProviderSt
         final globe = AnimatedBuilder(
           animation: _shake,
           builder: (context, child) => Transform.translate(offset: Offset(_shakeOffset, 0), child: child),
-          child: GlobeView(frame: _frame, clock: _clock, stops: state.journeyStops),
+          child: GlobeView(frame: _frame, clock: _clock, stops: state.journeyStops, dizzy: _dizzy),
         );
 
         final list = SuperSliverList(
