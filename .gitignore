@@ -61,3 +61,6 @@ mason-lock.json
 
 # Design system related
 .impeccable/
+
+# Brag video related
+brag-output/
